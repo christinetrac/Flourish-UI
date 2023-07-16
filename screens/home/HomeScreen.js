@@ -1,4 +1,4 @@
-import { StyleSheet, Text, SafeAreaView } from 'react-native';
+import { StyleSheet, SafeAreaView } from 'react-native';
 import { RegularText } from "../../components/CustomText";
 
 export const HomeScreen = ({ navigation }) => {
