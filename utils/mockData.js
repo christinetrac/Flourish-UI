@@ -1,16 +1,16 @@
 export const GROCERY_LIST = [
     {
-        item: 'eggs',
+        name: 'eggs',
         description: 'carton of 12',
         quantity: 1
     },
     {
-        item: 'bread',
+        name: 'bread',
         description: 'loaf',
         quantity: 2
     },
     {
-        item: 'carrots',
+        name: 'carrots',
         description: '3lb bag',
         quantity: 1
     }
@@ -18,17 +18,17 @@ export const GROCERY_LIST = [
 
 export const STORE_OPTIONS = [
     {
-        store: 'Walmart',
+        name: 'Walmart',
         total: 43.45,
         distance: '22 km'
     },
     {
-        store: 'Loblaws',
+        name: 'Loblaws',
         total: 47.45,
         distance: '27 km'
     },
     {
-        store: 'Longo\'s',
+        name: 'Longo\'s',
         total: 53.35,
         distance: '25 km'
     },

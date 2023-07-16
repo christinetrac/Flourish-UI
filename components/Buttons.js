@@ -1,5 +1,6 @@
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { BoldText } from "./CustomText";
+import BackIcon from "../assets/icons/back.svg";
 
 export const PrimaryButton = ({label, onPress}) => {
     return (
@@ -15,6 +16,15 @@ export const SecondaryButton = ({label, onPress}) => {
             <BoldText style={styles.text}>{label}</BoldText>
         </TouchableOpacity>
     );
+}
+
+export const BackButton = ({onPress}) => {
+    return (
+        <TouchableOpacity style={styles.backButton} onPress={onPress}>
+            <BackIcon color='#545454' width={10} height={20} />
+            <BoldText style={styles.backText}>back</BoldText>
+        </TouchableOpacity>
+    )
 }
 
 const styles = StyleSheet.create({
@@ -55,5 +65,20 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 20,
         textTransform: 'uppercase'
+    },
+    backButton: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        alignSelf: 'flex-start',
+        position: 'absolute',
+        top: 45,
+        left: 25
+    },
+    backText: {
+        fontSize: 20,
+        textTransform: 'uppercase',
+        color: '#545454',
+        paddingLeft: 10
     }
 });
