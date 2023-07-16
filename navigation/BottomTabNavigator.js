@@ -1,5 +1,4 @@
 import React from "react";
-import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { TAB_OPTIONS } from "../utils/constants";
@@ -36,7 +35,7 @@ const BottomTabNavigator = () => {
                     name={TAB_OPTIONS.home}
                     component={HomeNavigator}
                     options={{
-                        tabBarIcon: ({ color, size }) => (
+                        tabBarIcon: ({ color }) => (
                             <HomeIcon width={30} height={30} color={color} />
                         )
                     }}
@@ -45,7 +44,7 @@ const BottomTabNavigator = () => {
                     name={TAB_OPTIONS.list}
                     component={ListNavigator}
                     options={{
-                        tabBarIcon: ({ color, size }) => (
+                        tabBarIcon: ({ color }) => (
                             <ListIcon width={30} height={30} color={color} />
                         )
                     }}
@@ -54,7 +53,7 @@ const BottomTabNavigator = () => {
                     name={TAB_OPTIONS.search}
                     component={SearchNavigator}
                     options={{
-                        tabBarIcon: ({ color, size }) => (
+                        tabBarIcon: ({ color }) => (
                             <SearchIcon width={25} height={25} color={color} />
                         )
                     }}
@@ -63,7 +62,7 @@ const BottomTabNavigator = () => {
                     name={TAB_OPTIONS.profile}
                     component={ProfileNavigator}
                     options={{
-                        tabBarIcon: ({ color, size }) => (
+                        tabBarIcon: ({ color }) => (
                             <UserIcon width={30} height={30} color={color} />
                         )
                     }}
@@ -72,11 +71,5 @@ const BottomTabNavigator = () => {
         </NavigationContainer>
     );
 }
-
-const styles = StyleSheet.create({
-    icons: {
-        marginTop: 20,
-    },
-});
 
 export { BottomTabNavigator }

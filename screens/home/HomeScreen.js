@@ -1,9 +1,12 @@
 import { StyleSheet, Text, SafeAreaView } from 'react-native';
+import { RegularText } from "../../components/CustomText";
 
 export const HomeScreen = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
-            <Text>HOME SCREEN</Text>
+            <RegularText style={{ fontSize: 40 }} >
+                Welcome back, Name
+            </RegularText>
         </SafeAreaView>
     );
 }
