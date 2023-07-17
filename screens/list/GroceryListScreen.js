@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { TAB_OPTIONS, LIST_STACK } from "../../utils/constants";
 import { PrimaryButton, SecondaryButton } from "../../components/Buttons";
 import { BoldText, RegularText } from "../../components/CustomText";
 import { GroceryListItem } from "../../components/list/GroceryListItem";
+import { ScrollBlur } from "../../components/ScrollBlur";
 import { GROCERY_LIST } from "../../utils/mockData";
 
 export const GroceryListScreen = ({ navigation }) => {
@@ -15,16 +16,18 @@ export const GroceryListScreen = ({ navigation }) => {
 
     return (
         <View style={groceryList.length ? styles.list : styles.container}>
-            <BoldText style={{ fontSize: 40, alignSelf: 'flex-start', paddingLeft: 40 }}>Grocery List</BoldText>
+            <BoldText style={{ fontSize: 40, alignSelf: 'flex-start', paddingLeft: 40, paddingBottom: 15 }}>Grocery List</BoldText>
             {groceryList.length ? (
-                <View style={{ display: 'flex' }}>
-                    {groceryList.map((item, i) =>
-                        <GroceryListItem item={item} key={i} />
-                    )}
-                    <TouchableOpacity onPress={clearGroceryList}>
-                        <RegularText style={styles.clearListText}>Clear grocery list</RegularText>
-                    </TouchableOpacity>
-                </View>
+                <ScrollBlur>
+                    <ScrollView style={{ display: 'flex', width: 318, paddingTop: 10 }} showsVerticalScrollIndicator={false}>
+                        {groceryList.map((item, i) =>
+                            <GroceryListItem item={item} key={i} />
+                        )}
+                        <TouchableOpacity onPress={clearGroceryList}>
+                            <RegularText style={styles.clearListText}>Clear grocery list</RegularText>
+                        </TouchableOpacity>
+                    </ScrollView>
+                </ScrollBlur>
             ) : (
                 <View>
                     <Image source={require('../../assets/graphics/groceryCart.png')} style={styles.graphic} />
@@ -32,7 +35,7 @@ export const GroceryListScreen = ({ navigation }) => {
                 </View>
             )}
             {groceryList.length ? (
-                <View style={{ position: 'absolute', bottom: 20 }}>
+                <View style={{ display: 'flex', paddingTop: 20 }}>
                     <SecondaryButton label="add more items" onPress={() => navigation.navigate(TAB_OPTIONS.search)}/>
                     <PrimaryButton label="find the best deals" onPress={() => navigation.navigate(LIST_STACK.storeSelection)} />
                 </View>
@@ -72,6 +75,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: '#C10000',
         textAlign: 'center',
-        paddingTop: 15
+        paddingTop: 5,
+        paddingBottom: 35
     }
 });

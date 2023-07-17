@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Image } from 'react-native';
+import {StyleSheet, View, Image, ScrollView} from 'react-native';
 import { BoldText } from "../../components/CustomText";
 import { BackButton } from "../../components/Buttons";
 import { STORE_OPTIONS } from "../../utils/mockData";
 import { GroceryStoreSelect } from "../../components/list/GroceryStoreSelect";
+import { ScrollBlur } from "../../components/ScrollBlur";
 
 export const GroceryStoreSelectionScreen = ({ navigation }) => {
     const [storeOptions, setStoreOptions] = useState(STORE_OPTIONS);
@@ -13,9 +14,13 @@ export const GroceryStoreSelectionScreen = ({ navigation }) => {
             <BackButton onPress={() => navigation.pop()} />
             <BoldText style={{ fontSize: 40, alignSelf: 'flex-start', paddingLeft: 40 }}>Optimize your groceries</BoldText>
             <Image source={require('../../assets/graphics/optimize.png')} style={styles.graphic} />
-            {storeOptions.map(store => (
-                <GroceryStoreSelect store={store} />
-            ))}
+            <ScrollBlur>
+                <ScrollView style={{ display: 'flex', width: 320 }} showsVerticalScrollIndicator={false}>
+                    {storeOptions.map(store => (
+                        <GroceryStoreSelect store={store} key={store.name} />
+                    ))}
+                </ScrollView>
+            </ScrollBlur>
         </View>
     )
 }

@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 1,
         shadowRadius: 0,
-        marginTop: 20,
+        marginBottom: 20,
         display: 'flex',
         flexDirection: 'row',
         padding: 20,

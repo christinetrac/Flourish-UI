@@ -13,6 +13,16 @@ export const GROCERY_LIST = [
         name: 'carrots',
         description: '3lb bag',
         quantity: 1
+    },
+    {
+        name: 'apple',
+        description: '1 apple',
+        quantity: 6
+    },
+    {
+        name: 'yoghurt',
+        description: 'carton of 18',
+        quantity: 1
     }
 ]
 
