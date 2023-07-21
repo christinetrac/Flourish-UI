@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import {StyleSheet, View, Image, ScrollView} from 'react-native';
+import { StyleSheet, View, Image, ScrollView } from 'react-native';
 import { BoldText } from "../../components/CustomText";
 import { BackButton } from "../../components/Buttons";
 import { STORE_OPTIONS } from "../../utils/mockData";
 import { GroceryStoreSelect } from "../../components/list/GroceryStoreSelect";
 import { ScrollBlur } from "../../components/ScrollBlur";
+import { LIST_STACK } from "../../utils/constants";
 
 export const GroceryStoreSelectionScreen = ({ navigation }) => {
     const [storeOptions, setStoreOptions] = useState(STORE_OPTIONS);
@@ -17,7 +18,11 @@ export const GroceryStoreSelectionScreen = ({ navigation }) => {
             <ScrollBlur>
                 <ScrollView style={{ display: 'flex', width: 320 }} showsVerticalScrollIndicator={false}>
                     {storeOptions.map(store => (
-                        <GroceryStoreSelect store={store} key={store.name} />
+                        <GroceryStoreSelect
+                            store={store}
+                            key={store.name}
+                            onPress={() => navigation.navigate(LIST_STACK.storeConfirmation, {store})}
+                        />
                     ))}
                 </ScrollView>
             </ScrollBlur>

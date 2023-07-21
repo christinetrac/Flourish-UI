@@ -1,9 +1,9 @@
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { RegularText } from "../CustomText";
 
-export const GroceryStoreSelect = ({store}) => {
+export const GroceryStoreSelect = ({store, onPress}) => {
     return (
-        <TouchableOpacity style={styles.container} onPress={() => console.log("hi")}>
+        <TouchableOpacity style={styles.container} onPress={onPress}>
             <View>
                 <RegularText style={{ fontSize: 20, paddingBottom: 4 }}>{store.name}</RegularText>
                 <RegularText style={{ fontSize: 20, color: '#6A6A6A' }}>Total: ${store.total}</RegularText>

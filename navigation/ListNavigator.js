@@ -3,6 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { LIST_STACK } from "../utils/constants";
 import { GroceryListScreen } from "../screens/list/GroceryListScreen";
 import { GroceryStoreSelectionScreen } from "../screens/list/GroceryStoreSelectionScreen";
+import { GroceryStoreConfirmationScreen } from "../screens/list/GroceryStoreConfirmationScreen";
 
 const Stack = createStackNavigator();
 
@@ -11,6 +12,7 @@ export const ListNavigator = () => {
         <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name={LIST_STACK.list} component={GroceryListScreen} />
             <Stack.Screen name={LIST_STACK.storeSelection} component={GroceryStoreSelectionScreen} />
+            <Stack.Screen name={LIST_STACK.storeConfirmation} component={GroceryStoreConfirmationScreen} />
         </Stack.Navigator>
     );
 };
