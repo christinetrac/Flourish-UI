@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { StyleSheet, View, Image, ScrollView } from 'react-native';
 import { BoldText } from "../../components/CustomText";
 import { BackButton } from "../../components/Buttons";
-import { STORE_OPTIONS } from "../../utils/mockData";
+import {OPTIMIZED_GROCERIES, STORE_OPTIONS} from "../../utils/mockData";
 import { GroceryStoreSelect } from "../../components/list/GroceryStoreSelect";
 import { ScrollBlur } from "../../components/ScrollBlur";
 import { LIST_STACK } from "../../utils/constants";
 
 export const GroceryStoreSelectionScreen = ({ navigation }) => {
     const [storeOptions, setStoreOptions] = useState(STORE_OPTIONS);
+    const [optimizedGroceries, setOptimizedGroceries] = useState(OPTIMIZED_GROCERIES);
 
     return (
         <View style={styles.container}>
@@ -21,7 +22,7 @@ export const GroceryStoreSelectionScreen = ({ navigation }) => {
                         <GroceryStoreSelect
                             store={store}
                             key={store.name}
-                            onPress={() => navigation.navigate(LIST_STACK.storeConfirmation, {store})}
+                            onPress={() => navigation.navigate(LIST_STACK.storeConfirmation, {store:store, optimizedGroceries:optimizedGroceries})}
                         />
                     ))}
                 </ScrollView>

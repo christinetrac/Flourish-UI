@@ -25,7 +25,6 @@ const BottomTabNavigator = () => {
                         backgroundColor: "#fff",
                         height: 70,
                         paddingBottom: 14,
-                        borderTopWidth: 0,
                     },
                     tabBarShowLabel: false,
                     headerShown: false

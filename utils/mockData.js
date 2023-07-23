@@ -2,7 +2,7 @@ export const GROCERY_LIST = [
     {
         name: 'eggs',
         description: 'carton of 12',
-        quantity: 1
+        quantity: 1,
     },
     {
         name: 'bread',
