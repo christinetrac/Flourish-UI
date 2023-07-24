@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet, View, Image, ScrollView } from 'react-native';
 import {BackButton, PrimaryButtonXS} from "../../components/Buttons";
 import { BoldText, RegularText } from "../../components/CustomText";
 import { ScrollBlur } from "../../components/ScrollBlur";
-import {LinearGradient} from "expo-linear-gradient";
-import MaskedView from "@react-native-masked-view/masked-view";
+import { LIST_STACK } from "../../utils/constants";
 
 export const GroceryStoreConfirmationScreen = ({ navigation, route }) => {
     const store = route?.params?.store;
@@ -31,7 +30,7 @@ export const GroceryStoreConfirmationScreen = ({ navigation, route }) => {
                     </ScrollView>
                 </ScrollBlur>
                 <BoldText style={{ fontSize: 20, paddingBottom: 15, paddingTop: 8 }}>Total:  ${store.total}</BoldText>
-                <PrimaryButtonXS label="select this store" onPress={() => console.log("hi")} />
+                <PrimaryButtonXS label="select this store" onPress={() => navigation.navigate(LIST_STACK.listSuccess)} />
             </View>
         </View>
     )
@@ -47,8 +46,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     map: {
-        width: '100%',
-        height: '100%',
+        width: 390,
+        height: 600,
+        position: 'absolute',
+        bottom: 0
     },
     summaryContainer: {
         height: 340,
