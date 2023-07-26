@@ -10,8 +10,12 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import test_data from "../../mock_data/mock_product_data";
+import { Carousel } from "../../components/Carousel";
+import { SEARCH_CATEGORIES } from "../../utils/mockData";
 
 export const SearchScreen = ({ navigation }) => {
+  const [searchCategories, setSearchCategories] = useState(SEARCH_CATEGORIES);
+  
   const [search, setSearch] = useState("");
   const [filteredDataSource, setFilteredDataSource] = useState(test_data);
   const [masterDataSource, setMasterDataSource] = useState(test_data);
@@ -67,6 +71,12 @@ export const SearchScreen = ({ navigation }) => {
           </TouchableOpacity>
         ))}
       </ScrollView>
+
+      <View>
+        {searchCategories.map(category => (
+                <Carousel title={category.name} items={category.items} key={category.name} />
+            ))}
+      </View>
     </SafeAreaView>
   );
 };
@@ -80,7 +90,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     borderRadius: 25,
     borderColor: "grey",
-    backgroundColor: "white",
+    backgroundColor: '#F6FFF1',
   },
   inputIcon: {
     position: "absolute",
