@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@expo-google-fonts/inter": "^0.2.3",
+    "@expo/vector-icons": "^13.0.0",
     "@expo/webpack-config": "^18.0.1",
     "@react-native-masked-view/masked-view": "0.2.8",
     "@react-navigation/bottom-tabs": "^6.5.8",
@@ -23,6 +24,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.71.8",
+    "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-screens": "~3.20.0",
     "react-native-svg-transformer": "^1.0.0",
     "react-native-web": "~0.18.10"

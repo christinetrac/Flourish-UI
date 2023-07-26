@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from "react";
 import {
-  SafeAreaView,
   Text,
   StyleSheet,
   View,
   TouchableOpacity,
   ScrollView,
-  TextInput,
+  TextInput, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import test_data from "../../mock_data/mock_product_data";
+import { test_data } from "../../mock_data/mock_product_data";
 import { Carousel } from "../../components/Carousel";
 import { SEARCH_CATEGORIES } from "../../utils/mockData";
+import {RegularText} from "../../components/CustomText";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import {SEARCH_STACK} from "../../utils/constants";
 
 export const SearchScreen = ({ navigation }) => {
   const [searchCategories, setSearchCategories] = useState(SEARCH_CATEGORIES);
-  
+
   const [search, setSearch] = useState("");
   const [filteredDataSource, setFilteredDataSource] = useState(test_data);
   const [masterDataSource, setMasterDataSource] = useState(test_data);
@@ -44,12 +46,14 @@ export const SearchScreen = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.container}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}
+                                accessible={false}>
+    <View keyboardDismissMode="interactive" style={{ flex: 1, backgroundColor: '#F6FFF1' }}>
+      <View style={styles.searchContainer}>
         <Ionicons
           name="search"
           size={25}
-          color="grey"
+          color="#9D9D9D"
           style={styles.inputIcon}
         />
         <TextInput
@@ -59,59 +63,76 @@ export const SearchScreen = ({ navigation }) => {
           underlineColorAndroid="transparent"
         />
       </View>
-      <ScrollView
-        style={styles.scrollPage}
-        showsVerticalScrollIndicator={false}
-      >
-        {filteredDataSource.map((item) => (
-          <TouchableOpacity key={item.ProductName}>
-            <View style={{ margin: 10 }}>
-              <Text style={{ fontSize: 20 }}>{item.ProductName}</Text>
-            </View>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
-
-      <View>
-        {searchCategories.map(category => (
+      {search === "" ? (
+          <View keyboardDismissMode="interactive">
+            {searchCategories.map(category => (
                 <Carousel title={category.name} items={category.items} key={category.name} />
             ))}
-      </View>
-    </SafeAreaView>
+        </View>
+      ) : (
+          <View keyboardDismissMode="interactive">
+            <ScrollView
+                style={styles.scrollPage}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.scrollPageContainer}
+                contentInset={{bottom: 10, top: 0}}
+            >
+              {filteredDataSource.map((item) => (
+                  <TouchableOpacity key={item.ProductName} style={{ marginBottom: 10 }} onPress={() => navigation.navigate(SEARCH_STACK.product, {item: item})}>
+                    <View style={{ marginTop: 10 }}>
+                      <RegularText style={{ fontSize: 20, textTransform: "lowercase" }}>{item.ProductName}</RegularText>
+                    </View>
+                  </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </View>
+      )}
+    </View>
+      </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: 100,
-    borderWidth: 2,
-    height: 40,
-    width: 300,
+  searchContainer: {
+    marginTop: 70,
+    width: 326,
     alignSelf: "center",
-    borderRadius: 25,
-    borderColor: "grey",
-    backgroundColor: '#F6FFF1',
   },
   inputIcon: {
     position: "absolute",
-    top: 5,
-    left: 10,
+    top: 13,
+    left: 18,
+    zIndex: 999
   },
   itemStyle: {
     padding: 10,
   },
   textInputStyle: {
-    padding: 10,
-    top: 2,
-    left: 32,
+    paddingLeft: 50,
+    paddingRight: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontSize: 20,
+    fontFamily: 'Inter_400Regular',
+    backgroundColor: '#FFF',
+    borderRadius: 31,
+    borderWidth: 3,
+    borderColor: '#9D9D9D',
+    height: 52,
+    display: "flex"
   },
   scrollPage: {
-    flexGrow: 1,
-    marginBottom: 15,
-    width: 300,
+    width: 316,
     alignSelf: "center",
     backgroundColor: "white",
-    top: 10,
-    borderRadius: 25,
+    top: 14,
+    borderRadius: 7,
+    flexGrow: 0,
+    minHeight: 50,
+    maxHeight: '100%'
   },
+  scrollPageContainer: {
+    paddingHorizontal: 24,
+    flexGrow: 0,
+  }
 });

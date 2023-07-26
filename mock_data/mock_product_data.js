@@ -1,4 +1,4 @@
-test_data = [
+export const test_data = [
   {
     Category: "Produce",
     ProductName: "50/50 Blend - 10oz - Good  Gather",
@@ -3543,5 +3543,3 @@ test_data = [
     Store: "Safeway.com",
   },
 ];
-
-export default test_data;
