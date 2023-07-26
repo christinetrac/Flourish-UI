@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useState } from "react";
 import { StyleSheet, View, Image, ScrollView } from 'react-native';
 import { BoldText } from "../../components/CustomText";
 import { BackButton } from "../../components/Buttons";
