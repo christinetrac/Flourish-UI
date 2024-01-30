@@ -1,3 +1,10 @@
+export const ONBOARDING_STACK = {
+    getStarted: "Get Started Screen",
+    name: "Name Question Screen",
+    household: "Household Question Screen",
+    distance: "Distance Question Screen"
+}
+
 export const TAB_OPTIONS = {
     home: "Home Tab",
     list: "List Tab",

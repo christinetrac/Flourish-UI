@@ -1,6 +1,8 @@
 import { StyleSheet, View } from 'react-native';
 import { BottomTabNavigator } from "./navigation/BottomTabNavigator";
 import { useFonts, Inter_400Regular, Inter_700Bold } from '@expo-google-fonts/inter';
+import {OnboardingNavigator} from "./navigation/OnboardingNavigator";
+import {NavigationContainer} from "@react-navigation/native";
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -12,9 +14,17 @@ export default function App() {
     return null;
   }
 
+  const showOnboarding = true;
+
   return (
     <View style={styles.container}>
-      <BottomTabNavigator style={styles.tab} />
+      {showOnboarding ? (
+          <NavigationContainer>
+            <OnboardingNavigator />
+          </NavigationContainer>
+      ):(
+          <BottomTabNavigator style={styles.tab} />
+      )}
     </View>
   );
 }
