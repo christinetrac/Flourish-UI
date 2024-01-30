@@ -1,11 +1,15 @@
 import React from "react";
-import {BackButton, PrimaryButton, PrimaryButtonXS} from "../../components/Buttons";
-import {BoldText, RegularText} from "../../components/CustomText";
-import {Image, ScrollView, StyleSheet, View} from "react-native";
-import {TAB_OPTIONS} from "../../utils/constants";
+import { BackButton, PrimaryButton } from "../../components/Buttons";
+import { RegularText } from "../../components/CustomText";
+import { Image, StyleSheet, View } from "react-native";
+import { TAB_OPTIONS } from "../../utils/constants";
 
-export const ProductScreen = ({ navigation, route }) => {
+const ProductScreen = ({ navigation, route }) => {
     const item = route?.params?.item;
+
+    const handleAddToList = () => {
+        navigation.navigate(TAB_OPTIONS.list);
+    }
 
     return (
         <View style={styles.container}>
@@ -13,9 +17,9 @@ export const ProductScreen = ({ navigation, route }) => {
             <View style={styles.card}>
                 <Image source={require("../../assets/images/orange.png")} style={styles.image} />
             </View>
-            <RegularText style={{ fontSize: 40, alignSelf: 'flex-start', paddingTop: 30 }}>{item.ProductName}</RegularText>
-            <RegularText style={{ fontSize: 20, alignSelf: 'flex-start', paddingTop: 18, paddingBottom: 20 }}>Price: {item.Price}</RegularText>
-            <PrimaryButton label="add to list" onPress={() => navigation.navigate(TAB_OPTIONS.list)} />
+            <RegularText style={{ fontSize: 40, paddingLeft: 40, alignSelf: 'flex-start', paddingTop: 30 }}>{item.ProductName}</RegularText>
+            <RegularText style={{ fontSize: 20, paddingLeft: 40, alignSelf: 'flex-start', paddingTop: 18, paddingBottom: 20 }}>Price: {item.Price}</RegularText>
+            <PrimaryButton label="add to list" onPress={handleAddToList} />
         </View>
     )
 }
@@ -28,7 +32,6 @@ const styles = StyleSheet.create({
         paddingBottom: 20,
         position: 'relative',
         alignItems: 'center',
-        paddingHorizontal: 40,
     },
     card: {
         width: 310,
@@ -51,3 +54,5 @@ const styles = StyleSheet.create({
         width: 220,
     },
 });
+
+export default ProductScreen;

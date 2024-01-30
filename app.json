@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Flourish-UI",
-    "slug": "Flourish-UI",
+    "slug": "fydp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -35,6 +35,12 @@
         "wasm",
         "svg"
       ]
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "4620212c-b851-4605-9abe-d751aaff9e15"
+      }
+    },
+    "owner": "christinetrac"
   }
 }

@@ -76,25 +76,32 @@ export const OPTIMIZED_GROCERIES = [
 ]
 
 export const SEARCH_CATEGORIES = [
+    // {
+    //     name: 'recipes',
+    //     items: [
+    //         require('../assets/images/recipes1.png'),
+    //         require('../assets/images/recipes2.png')
+    //     ]
+    // },
     {
-        name: 'recipes',
+        name: 'Recipes',
         items: [
-            require('../assets/images/recipes1.png'),
-            require('../assets/images/recipes2.png')
+            require('../assets/images/produce1.png'),
+            require('../assets/images/produce1.png'),
         ]
     },
     {
         name: 'proteins',
         items: [
             require('../assets/images/proteins1.png'),
-            require('../assets/images/proteins2.png')
+            require('../assets/images/proteins1.png'),
         ]
     },
     {
         name: 'produce',
         items: [
             require('../assets/images/produce1.png'),
-            require('../assets/images/produce2.png')
+            require('../assets/images/produce1.png'),
         ]
     }
 ]

@@ -64,7 +64,7 @@ export const SearchScreen = ({ navigation }) => {
         />
       </View>
       {search === "" ? (
-          <View keyboardDismissMode="interactive">
+          <View keyboardDismissMode="interactive" style={{ paddingLeft: 40, paddingTop: 40 }}>
             {searchCategories.map(category => (
                 <Carousel title={category.name} items={category.items} key={category.name} />
             ))}
