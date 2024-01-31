@@ -11,7 +11,7 @@ export const GetStartedScreen = ({ navigation }) => {
                 Flourish: saving your groceries
             </BoldText>
             <Image source={require('../../assets/graphics/piggy.png')} style={styles.graphic} />
-            <PrimaryButton label="get started" onPress={() => navigation.navigate(ONBOARDING_STACK.household)} />
+            <PrimaryButton label="get started" onPress={() => navigation.navigate(ONBOARDING_STACK.name)} />
         </SafeAreaView>
     );
 }

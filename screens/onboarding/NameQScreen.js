@@ -4,8 +4,8 @@ import {PrimaryButton} from "../../components/Buttons";
 import {ONBOARDING_STACK} from "../../utils/constants";
 import React, {useState} from "react";
 
-export const HouseholdQScreen = ({ navigation }) => {
-    const [num, onChangeNum] = useState("");
+export const NameQScreen = ({ navigation }) => {
+    const [name, onChangeName] = useState("");
 
     return (
         <SafeAreaView style={styles.container}>
@@ -13,24 +13,23 @@ export const HouseholdQScreen = ({ navigation }) => {
                 <View>
                     <Image source={require('../../assets/graphics/house.png')} style={styles.graphic} />
                     <RegularText style={{ fontSize: 32, alignSelf: 'flex-start', paddingLeft: 40, paddingBottom: 20, width: 330 }}>
-                        How many people are you feeding including yourself?
+                        Some quick questions; what’s your name?
                     </RegularText>
                     <View style={styles.inputContainer}>
                         <View style={styles.inputLabel}>
                             <RegularText style={{ fontSize: 20 }}>
-                                Household Size
+                                Name
                             </RegularText>
                         </View>
                         <TextInput
                             style={styles.input}
-                            onChangeText={onChangeNum}
-                            value={num}
-                            placeholder="Number"
-                            keyboardType="numeric"
+                            onChangeText={onChangeName}
+                            value={name}
+                            placeholder="John Doe"
                             placeholderTextColor="#747474"
                         />
                     </View>
-                    <PrimaryButton label="next" onPress={() => navigation.navigate(ONBOARDING_STACK.getStarted)} />
+                    <PrimaryButton label="next" onPress={() => navigation.navigate(ONBOARDING_STACK.distance)} />
                 </View>
             </TouchableWithoutFeedback>
         </SafeAreaView>
@@ -67,7 +66,7 @@ const styles = StyleSheet.create({
         borderRightWidth: 0,
         justifyContent: "center",
         paddingLeft: 18,
-        width: 185
+        width: 85
     },
     input: {
         height: 56,
@@ -82,7 +81,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontFamily: 'Inter_400Regular',
         borderLeftWidth: 0,
-        width: 120,
+        width: 220,
         zIndex: 99
     },
 });

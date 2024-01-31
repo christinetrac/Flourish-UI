@@ -50,7 +50,8 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 1,
         shadowRadius: 0,
-        marginBottom: 20
+        marginBottom: 20,
+        zIndex: -1
     },
     primaryButtonXS: {
         alignSelf: 'center',
@@ -67,7 +68,8 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 1,
         shadowRadius: 0,
-        marginBottom: 20
+        marginBottom: 20,
+        zIndex: -1
     },
     secondaryButton: {
         alignSelf: 'center',
@@ -84,7 +86,8 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 1,
         shadowRadius: 0,
-        marginBottom: 20
+        marginBottom: 20,
+        zIndex: -1
     },
     text: {
         fontSize: 20,
