@@ -5,7 +5,9 @@ import {PrimaryButton} from "../../components/Buttons";
 import {ONBOARDING_STACK} from "../../utils/constants";
 import React, {useState} from "react";
 
-export const DistanceQScreen = ({ navigation }) => {
+export const DistanceQScreen = ({ navigation, route }) => {
+    const name = route?.params?.name;
+
     const [num, onChangeNum] = useState("");
 
     const [open, setOpen] = useState(false);
@@ -59,7 +61,11 @@ export const DistanceQScreen = ({ navigation }) => {
                             }}
                         />
                     </View>
-                    <PrimaryButton label="next" onPress={() => navigation.navigate(ONBOARDING_STACK.household)} />
+                    <PrimaryButton label="next" onPress={() => navigation.navigate(ONBOARDING_STACK.household, {
+                        name: name,
+                        distance: num,
+                        unit: selectedUnit
+                    })} />
                 </View>
             </TouchableWithoutFeedback>
         </SafeAreaView>

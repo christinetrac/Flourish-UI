@@ -29,7 +29,7 @@ export const NameQScreen = ({ navigation }) => {
                             placeholderTextColor="#747474"
                         />
                     </View>
-                    <PrimaryButton label="next" onPress={() => navigation.navigate(ONBOARDING_STACK.distance)} />
+                    <PrimaryButton label="next" onPress={() => navigation.navigate(ONBOARDING_STACK.distance, {name: name})} />
                 </View>
             </TouchableWithoutFeedback>
         </SafeAreaView>

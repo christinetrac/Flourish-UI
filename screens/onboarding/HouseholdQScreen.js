@@ -4,8 +4,12 @@ import {PrimaryButton} from "../../components/Buttons";
 import {ONBOARDING_STACK} from "../../utils/constants";
 import React, {useState} from "react";
 
-export const HouseholdQScreen = ({ navigation }) => {
-    const [num, onChangeNum] = useState("");
+export const HouseholdQScreen = ({ navigation, route }) => {
+    const name = route?.params?.name;
+    const distance = route?.params?.distance;
+    const unit = route?.params?.unit;
+
+    const [numPeople, onChangeNumPeople] = useState("");
 
     return (
         <SafeAreaView style={styles.container}>
@@ -23,8 +27,8 @@ export const HouseholdQScreen = ({ navigation }) => {
                         </View>
                         <TextInput
                             style={styles.input}
-                            onChangeText={onChangeNum}
-                            value={num}
+                            onChangeText={onChangeNumPeople}
+                            value={numPeople}
                             placeholder="Number"
                             keyboardType="numeric"
                             placeholderTextColor="#747474"
