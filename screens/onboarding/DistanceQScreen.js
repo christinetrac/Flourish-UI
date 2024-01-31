@@ -52,7 +52,7 @@ export const DistanceQScreen = ({ navigation }) => {
                             placeholderStyle={styles.inputText}
                             showArrowIcon={false}
                             dropDownContainerStyle={{
-                                width: 100,
+                                width: 110,
                                 zIndex: 999999,
                                 borderWidth: 2,
                                 borderColor: "#9D9D9D",
