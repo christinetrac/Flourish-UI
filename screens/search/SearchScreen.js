@@ -5,15 +5,17 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
-  TextInput, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback,
+  TextInput,
+  KeyboardAvoidingView,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { test_data } from "../../mock_data/mock_product_data";
 import { Carousel } from "../../components/Carousel";
 import { SEARCH_CATEGORIES } from "../../utils/mockData";
-import {RegularText} from "../../components/CustomText";
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import {SEARCH_STACK} from "../../utils/constants";
+import { RegularText } from "../../components/CustomText";
+import { SEARCH_STACK } from "../../utils/constants";
 
 export const SearchScreen = ({ navigation }) => {
   const [searchCategories, setSearchCategories] = useState(SEARCH_CATEGORIES);
@@ -46,49 +48,65 @@ export const SearchScreen = ({ navigation }) => {
   };
 
   return (
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}
-                                accessible={false}>
-    <View keyboardDismissMode="interactive" style={{ flex: 1, backgroundColor: '#F6FFF1' }}>
-      <View style={styles.searchContainer}>
-        <Ionicons
-          name="search"
-          size={25}
-          color="#9D9D9D"
-          style={styles.inputIcon}
-        />
-        <TextInput
-          style={styles.textInputStyle}
-          onChangeText={(text) => searchFilterFunction(text)}
-          value={search}
-          underlineColorAndroid="transparent"
-        />
-      </View>
-      {search === "" ? (
-          <View keyboardDismissMode="interactive" style={{ paddingLeft: 40, paddingTop: 40 }}>
-            {searchCategories.map(category => (
-                <Carousel title={category.name} items={category.items} key={category.name} />
-            ))}
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <View
+        keyboardDismissMode="interactive"
+        style={{ flex: 1, backgroundColor: "#F6FFF1" }}
+      >
+        <View style={styles.searchContainer}>
+          <Ionicons
+            name="search"
+            size={25}
+            color="#9D9D9D"
+            style={styles.inputIcon}
+          />
+          <TextInput
+            style={styles.textInputStyle}
+            onChangeText={(text) => searchFilterFunction(text)}
+            value={search}
+            underlineColorAndroid="transparent"
+          />
         </View>
-      ) : (
+        {search === "" ? (
+          <View keyboardDismissMode="interactive">
+            {searchCategories.map((category) => (
+              <Carousel
+                title={category.name}
+                items={category.items}
+                key={category.name}
+              />
+            ))}
+          </View>
+        ) : (
           <View keyboardDismissMode="interactive">
             <ScrollView
-                style={styles.scrollPage}
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={styles.scrollPageContainer}
-                contentInset={{bottom: 10, top: 0}}
+              style={styles.scrollPage}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={styles.scrollPageContainer}
+              contentInset={{ bottom: 10, top: 0 }}
             >
               {filteredDataSource.map((item) => (
-                  <TouchableOpacity key={item.ProductName} style={{ marginBottom: 10 }} onPress={() => navigation.navigate(SEARCH_STACK.product, {item: item})}>
-                    <View style={{ marginTop: 10 }}>
-                      <RegularText style={{ fontSize: 20, textTransform: "lowercase" }}>{item.ProductName}</RegularText>
-                    </View>
-                  </TouchableOpacity>
+                <TouchableOpacity
+                  key={item.ProductName}
+                  style={{ marginBottom: 10 }}
+                  onPress={() =>
+                    navigation.navigate(SEARCH_STACK.product, { item: item })
+                  }
+                >
+                  <View style={{ marginTop: 10 }}>
+                    <RegularText
+                      style={{ fontSize: 20, textTransform: "lowercase" }}
+                    >
+                      {item.ProductName}
+                    </RegularText>
+                  </View>
+                </TouchableOpacity>
               ))}
             </ScrollView>
           </View>
-      )}
-    </View>
-      </TouchableWithoutFeedback>
+        )}
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -102,7 +120,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 13,
     left: 18,
-    zIndex: 999
+    zIndex: 999,
   },
   itemStyle: {
     padding: 10,
@@ -110,16 +128,16 @@ const styles = StyleSheet.create({
   textInputStyle: {
     paddingLeft: 50,
     paddingRight: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     fontSize: 20,
-    fontFamily: 'Inter_400Regular',
-    backgroundColor: '#FFF',
+    fontFamily: "Inter_400Regular",
+    backgroundColor: "#FFF",
     borderRadius: 31,
     borderWidth: 3,
-    borderColor: '#9D9D9D',
+    borderColor: "#9D9D9D",
     height: 52,
-    display: "flex"
+    display: "flex",
   },
   scrollPage: {
     width: 316,
@@ -129,10 +147,10 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     flexGrow: 0,
     minHeight: 50,
-    maxHeight: '100%'
+    maxHeight: "100%",
   },
   scrollPageContainer: {
     paddingHorizontal: 24,
     flexGrow: 0,
-  }
+  },
 });
