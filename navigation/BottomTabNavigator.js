@@ -9,7 +9,6 @@ import UserIcon from "../assets/icons/user.svg";
 import { HomeNavigator } from "./HomeNavigator";
 import { SearchNavigator } from "./SearchNavigator";
 import { ListNavigator } from "./ListNavigator";
-import { MapNavigator } from "./MapNavigator";
 import { ProfileNavigator } from "./ProfileNavigator";
 
 const Tab = createBottomTabNavigator();
@@ -46,15 +45,6 @@ const BottomTabNavigator = () => {
           options={{
             tabBarIcon: ({ color }) => (
               <ListIcon width={30} height={30} color={color} />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name={TAB_OPTIONS.map}
-          component={MapNavigator}
-          options={{
-            tabBarIcon: ({ color }) => (
-              <SearchIcon width={25} height={25} color={color} />
             ),
           }}
         />

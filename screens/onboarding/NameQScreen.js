@@ -4,7 +4,9 @@ import {PrimaryButton} from "../../components/Buttons";
 import {ONBOARDING_STACK} from "../../utils/constants";
 import React, {useState} from "react";
 
-export const NameQScreen = ({ navigation }) => {
+export const NameQScreen = ({ navigation, route }) => {
+    const userId = route?.params?.userId;
+
     const [name, onChangeName] = useState("");
 
     return (
@@ -29,7 +31,7 @@ export const NameQScreen = ({ navigation }) => {
                             placeholderTextColor="#747474"
                         />
                     </View>
-                    <PrimaryButton label="next" onPress={() => navigation.navigate(ONBOARDING_STACK.distance, {name: name})} />
+                    <PrimaryButton label="next" onPress={() => navigation.navigate(ONBOARDING_STACK.distance, {userId: userId, name: name})} />
                 </View>
             </TouchableWithoutFeedback>
         </SafeAreaView>

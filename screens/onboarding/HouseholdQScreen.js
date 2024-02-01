@@ -5,11 +5,19 @@ import {ONBOARDING_STACK} from "../../utils/constants";
 import React, {useState} from "react";
 
 export const HouseholdQScreen = ({ navigation, route }) => {
+    const userId = route?.params?.userId;
     const name = route?.params?.name;
     const distance = route?.params?.distance;
     const unit = route?.params?.unit;
 
     const [numPeople, onChangeNumPeople] = useState("");
+
+    const handleSubmit = () => {
+        // send user profile to backend
+
+        // go to homepage
+        navigation.navigate(ONBOARDING_STACK.getStarted);
+    }
 
     return (
         <SafeAreaView style={styles.container}>
@@ -34,7 +42,7 @@ export const HouseholdQScreen = ({ navigation, route }) => {
                             placeholderTextColor="#747474"
                         />
                     </View>
-                    <PrimaryButton label="next" onPress={() => navigation.navigate(ONBOARDING_STACK.getStarted)} />
+                    <PrimaryButton label="submit" onPress={handleSubmit} />
                 </View>
             </TouchableWithoutFeedback>
         </SafeAreaView>

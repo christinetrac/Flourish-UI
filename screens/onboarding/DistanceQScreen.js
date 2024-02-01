@@ -6,6 +6,7 @@ import {ONBOARDING_STACK} from "../../utils/constants";
 import React, {useState} from "react";
 
 export const DistanceQScreen = ({ navigation, route }) => {
+    const userId = route?.params?.userId;
     const name = route?.params?.name;
 
     const [num, onChangeNum] = useState("");
@@ -62,6 +63,7 @@ export const DistanceQScreen = ({ navigation, route }) => {
                         />
                     </View>
                     <PrimaryButton label="next" onPress={() => navigation.navigate(ONBOARDING_STACK.household, {
+                        userId: userId,
                         name: name,
                         distance: num,
                         unit: selectedUnit

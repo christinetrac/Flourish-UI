@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { StyleSheet, Text, View } from "react-native";
 import MapView, { Marker } from "react-native-maps";
-import MapViewDirections from "react-native-maps-directions";
+import * as Location from 'expo-location';
 
 export const MapScreen = ({ navigation }) => {
   const [destination, setDestination] = useState({
@@ -13,8 +13,34 @@ export const MapScreen = ({ navigation }) => {
     latitude: 43.47661328187301,
     longitude: -80.53906325877767,
   });
-  return (
+
+    const [location, setLocation] = useState(null);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        (async () => {
+
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+                setError('Permission to access location was denied');
+                return;
+            }
+
+            let location = await Location.getCurrentPositionAsync({});
+            setLocation(location);
+        })();
+    }, []);
+
+    let text = 'Waiting..';
+    if (error) {
+        text = error;
+    } else if (location) {
+        text = JSON.stringify(location);
+    }
+
+    return (
     <View style={styles.container}>
+      <Text style={styles.test}>{text}</Text>
       <MapView
         style={styles.map}
         initialRegion={{
@@ -24,15 +50,11 @@ export const MapScreen = ({ navigation }) => {
           longitudeDelta: 1,
         }}
       >
-        <MapViewDirections
-          origin={origin}
-          destination={destination}
-          apikey="GOOGLE_MAPS_API_KEY"
-          strokeWidth={4}
-          strokeColor="red"
+        <Marker draggable
+                coordinate={destination}
+                onDragEnd={e => {setDestination(e.nativeEvent.coordinate)}}
+                title="Your Location"
         />
-        <Marker coordinate={origin} title="Starting Point" />
-        <Marker coordinate={destination} title="Destination Point" />
       </MapView>
     </View>
   );
@@ -40,6 +62,11 @@ export const MapScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  test: {
+      position: "absolute",
+      fontSize: 20,
+      zIndex: 9999
   },
   map: {
     flex: 1,

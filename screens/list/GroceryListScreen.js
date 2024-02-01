@@ -37,7 +37,7 @@ export const GroceryListScreen = ({ navigation }) => {
             {groceryList.length ? (
                 <View style={{ display: 'flex', paddingTop: 20 }}>
                     <SecondaryButton label="add more items" onPress={() => navigation.navigate(TAB_OPTIONS.search)}/>
-                    <PrimaryButton label="find the best deals" onPress={() => navigation.navigate(LIST_STACK.storeSelection)} />
+                    <PrimaryButton label="find the best deals" onPress={() => navigation.navigate(LIST_STACK.storeGetLocationOptions)} />
                 </View>
             ) : (
                 <PrimaryButton label="add more items" onPress={() => navigation.navigate(TAB_OPTIONS.search)} />

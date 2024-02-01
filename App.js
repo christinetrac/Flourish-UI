@@ -1,8 +1,9 @@
-import { StyleSheet, View } from 'react-native';
-import { BottomTabNavigator } from "./navigation/BottomTabNavigator";
-import { useFonts, Inter_400Regular, Inter_700Bold } from '@expo-google-fonts/inter';
+import {StyleSheet, View} from 'react-native';
+import {BottomTabNavigator} from "./navigation/BottomTabNavigator";
+import {Inter_400Regular, Inter_700Bold, useFonts} from '@expo-google-fonts/inter';
 import {OnboardingNavigator} from "./navigation/OnboardingNavigator";
 import {NavigationContainer} from "@react-navigation/native";
+import * as SecureStore from 'expo-secure-store';
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -14,7 +15,11 @@ export default function App() {
     return null;
   }
 
-  const showOnboarding = true;
+  const getUserId = async () => {
+    return await SecureStore.getItemAsync('userId');
+  }
+
+  const showOnboarding = false;
 
   return (
     <View style={styles.container}>
