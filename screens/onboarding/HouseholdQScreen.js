@@ -3,6 +3,7 @@ import {RegularText} from "../../components/CustomText";
 import {PrimaryButton} from "../../components/Buttons";
 import {ONBOARDING_STACK} from "../../utils/constants";
 import React, {useState} from "react";
+import * as SecureStore from "expo-secure-store";
 
 export const HouseholdQScreen = ({ navigation, route }) => {
     const userId = route?.params?.userId;
@@ -12,8 +13,9 @@ export const HouseholdQScreen = ({ navigation, route }) => {
 
     const [numPeople, onChangeNumPeople] = useState("");
 
-    const handleSubmit = () => {
-        // send user profile to backend
+    const handleSubmit = async () => {
+        // send user profile to backend and persist to local storage
+        await SecureStore.setItemAsync('userId', userId.toString());
 
         // go to homepage
         navigation.navigate(ONBOARDING_STACK.getStarted);

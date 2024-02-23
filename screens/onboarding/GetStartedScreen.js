@@ -1,15 +1,13 @@
-import {StyleSheet, SafeAreaView, Image} from 'react-native';
+import {Image, SafeAreaView, StyleSheet} from 'react-native';
 import {BoldText} from "../../components/CustomText";
 import React from "react";
 import {ONBOARDING_STACK} from "../../utils/constants";
 import {PrimaryButton} from "../../components/Buttons";
-import * as SecureStore from "expo-secure-store";
 import uuid from "react-native-uuid";
 
 export const GetStartedScreen = ({ navigation }) => {
     const createNewUserId = async () => {
-        let userId = uuid.v4();
-        await SecureStore.setItemAsync('userId', userId.toString());
+        return uuid.v4();
     }
 
     return (

@@ -4,8 +4,8 @@ import { RegularText } from "../../components/CustomText";
 import { Image, StyleSheet, View } from "react-native";
 import { TAB_OPTIONS } from "../../utils/constants";
 
-export const ProductScreen = ({ navigation, route }) => {
-    const item = route?.params?.item;
+export const BestProductScreen = ({ navigation, route }) => {
+    const query = route?.params?.query;
 
     const handleAddToList = () => {
         navigation.navigate(TAB_OPTIONS.list);

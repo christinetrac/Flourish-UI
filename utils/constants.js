@@ -34,6 +34,6 @@ export const PROFILE_STACK = {
 
 export const SEARCH_STACK = {
   search: "Search Screen",
-  searchResults: "Search Results Screen",
   product: "Product Screen",
+  bestProductScreen: "Best Product Screen",
 };

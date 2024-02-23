@@ -13,7 +13,7 @@ export const NameQScreen = ({ navigation, route }) => {
         <SafeAreaView style={styles.container}>
             <TouchableWithoutFeedback onPress={()=> Keyboard.dismiss()} accessible={false}>
                 <View>
-                    <Image source={require('../../assets/graphics/house.png')} style={styles.graphic} />
+                    <Image source={require('../../assets/graphics/hats.png')} style={styles.graphic} />
                     <RegularText style={{ fontSize: 32, alignSelf: 'flex-start', paddingLeft: 40, paddingBottom: 20, width: 330 }}>
                         Some quick questions; what’s your name?
                     </RegularText>
@@ -45,10 +45,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     graphic: {
-        width: 258,
-        height: 258,
+        width: 303,
+        height: 303,
         alignSelf: 'center',
-        marginBottom: 40,
+        marginBottom: 20,
     },
     inputContainer: {
         display: "flex",

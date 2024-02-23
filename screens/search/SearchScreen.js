@@ -1,26 +1,26 @@
 import React, { useState, useEffect } from "react";
 import {
-  Text,
   StyleSheet,
   View,
   TouchableOpacity,
   ScrollView,
   TextInput,
-  KeyboardAvoidingView,
   Keyboard,
+  Image,
   TouchableWithoutFeedback,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { test_data } from "../../mock_data/mock_product_data";
-import { Carousel } from "../../components/Carousel";
 import { SEARCH_CATEGORIES } from "../../utils/mockData";
-import { RegularText } from "../../components/CustomText";
+import {RegularText, BoldText, RegularClippedText} from "../../components/CustomText";
 import { SEARCH_STACK } from "../../utils/constants";
+import {PrimaryButton} from "../../components/Buttons";
 
 export const SearchScreen = ({ navigation }) => {
   const [searchCategories, setSearchCategories] = useState(SEARCH_CATEGORIES);
 
   const [search, setSearch] = useState("");
+  const [submitted, setSubmitted] = useState(false);
   const [filteredDataSource, setFilteredDataSource] = useState(test_data);
   const [masterDataSource, setMasterDataSource] = useState(test_data);
 
@@ -39,16 +39,93 @@ export const SearchScreen = ({ navigation }) => {
       });
       setFilteredDataSource(newData);
       setSearch(text);
+      setSubmitted(false);
     } else {
       // Inserted text is blank
       // Update FilteredDataSource with masterDataSource
       setFilteredDataSource(masterDataSource);
       setSearch(text);
+      setSubmitted(false);
     }
   };
 
+  const rows = searchCategories.map(category => (
+      <View style={{height: 210, width:400, paddingLeft:0, paddingRight:0, alignSelf:'center', paddingTop:20}} key={category.name}>
+        <View style={{flexDirection:'row'}}>
+          <BoldText style={{fontSize: 32, alignSelf: 'flex-start', paddingLeft: 16, paddingBottom: 8, textTransform: 'capitalize'}}>{category.name}</BoldText>
+        </View>
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+          {category.items.map(image => (
+              <TouchableOpacity style={{zIndex:10}} key={image} onPress={() => undefined}>
+                <View style={{marginRight:10, marginLeft:15}}>
+                  <View style={[styles.card, styles.shadowProp]}>
+                    <Image source={image} style={styles.image}/>
+                  </View>
+                </View>
+              </TouchableOpacity>
+          ))}
+        </ScrollView>
+      </View>
+  ));
+
+  const handleSubmitEditing = () => {
+    setSubmitted(true);
+  }
+
+  const searchAutocompleteList = () => (
+      <View keyboardDismissMode="interactive" style={styles.scrollPage}>
+          {filteredDataSource.map((item) => (
+              <TouchableOpacity
+                  key={item.ProductName}
+                  style={{ marginBottom: 10, paddingHorizontal: 20 }}
+                  onPress={() =>
+                      navigation.navigate(SEARCH_STACK.product, { item: item })
+                  }
+              >
+                <View style={{ marginTop: 10 }}>
+                  <RegularText
+                      style={{ fontSize: 20, textTransform: "lowercase" }}
+                  >
+                    {item.ProductName}
+                  </RegularText>
+                </View>
+              </TouchableOpacity>
+          ))}
+      </View>
+  )
+
+  const searchResults = () => (
+      <View style={{paddingTop:25}}>
+        <ScrollView>
+          <PrimaryButton
+              label="give me the best price"
+              onPress={() => navigation.navigate(SEARCH_STACK.bestProductScreen, { query: search })}
+          />
+          <BoldText style={{fontSize: 32, paddingLeft: 40, paddingVertical: 20}}>Specific Products</BoldText>
+          {filteredDataSource.map((item) => (
+              <TouchableOpacity
+                  key={item.ProductName}
+                  style={[styles.productCard, styles.productCardShadowProp]}
+                  onPress={() =>
+                      navigation.navigate(SEARCH_STACK.product, { item: item })
+                  }
+              >
+                  <Image source={item.Picture} style={styles.productImage} />
+                  <RegularClippedText
+                      numberOfLines={1}
+                      style={{ fontSize: 18, textTransform: "capitalize", width: 170, alignSelf: "center" }}
+                  >
+                    {item.ProductName}
+                  </RegularClippedText>
+              </TouchableOpacity>
+          ))}
+        </ScrollView>
+      </View>
+  )
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <ScrollView showsVerticalScrollIndicator={false} style={{backgroundColor: "#F6FFF1"}}>
       <View
         keyboardDismissMode="interactive"
         style={{ flex: 1, backgroundColor: "#F6FFF1" }}
@@ -65,47 +142,22 @@ export const SearchScreen = ({ navigation }) => {
             onChangeText={(text) => searchFilterFunction(text)}
             value={search}
             underlineColorAndroid="transparent"
+            onSubmitEditing={handleSubmitEditing}
           />
         </View>
         {search === "" ? (
-          <View keyboardDismissMode="interactive">
-            {searchCategories.map((category) => (
-              <Carousel
-                title={category.name}
-                items={category.items}
-                key={category.name}
-              />
-            ))}
-          </View>
+            <View style={styles.box}>
+              {rows}
+            </View>
         ) : (
-          <View keyboardDismissMode="interactive">
-            <ScrollView
-              style={styles.scrollPage}
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={styles.scrollPageContainer}
-              contentInset={{ bottom: 10, top: 0 }}
-            >
-              {filteredDataSource.map((item) => (
-                <TouchableOpacity
-                  key={item.ProductName}
-                  style={{ marginBottom: 10 }}
-                  onPress={() =>
-                    navigation.navigate(SEARCH_STACK.product, { item: item })
-                  }
-                >
-                  <View style={{ marginTop: 10 }}>
-                    <RegularText
-                      style={{ fontSize: 20, textTransform: "lowercase" }}
-                    >
-                      {item.ProductName}
-                    </RegularText>
-                  </View>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
-          </View>
+            submitted ? (
+                searchResults()
+            ) : (
+                searchAutocompleteList()
+            )
         )}
       </View>
+      </ScrollView>
     </TouchableWithoutFeedback>
   );
 };
@@ -146,11 +198,64 @@ const styles = StyleSheet.create({
     top: 14,
     borderRadius: 7,
     flexGrow: 0,
-    minHeight: 50,
-    maxHeight: "100%",
+    marginBottom: 30
   },
-  scrollPageContainer: {
-    paddingHorizontal: 24,
-    flexGrow: 0,
+  card: {
+    width: 176,
+    height: 129,
+    backgroundColor: '#fff',
+    borderRadius: 14,
+    zIndex: 2,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
   },
+  image: {
+    flex: 1,
+    width: '100%',
+    height: undefined,
+    aspectRatio: 1,
+    resizeMode: 'contain',
+    justifyContent: "center",
+    alignSelf: "center",
+  },
+  box: {
+    width: 100 + '%',
+    paddingLeft: 50,
+    paddingTop: 20,
+    paddingBottom: 50
+  },
+  shadowProp: {
+    shadowOffset: {width: 12, height: 12},
+    shadowColor: '#DCDCDC',
+    shadowOpacity: 1,
+    shadowRadius: 0,
+  },
+  productCardShadowProp: {
+    shadowOffset: {width: 10, height: 10},
+    shadowColor: '#DCDCDC',
+    shadowOpacity: 1,
+    shadowRadius: 0,
+  },
+  productCard: {
+    width: 315,
+    backgroundColor: '#fff',
+    borderRadius: 14,
+    alignSelf: "center",
+    height: 100,
+    marginBottom: 26,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    display: "flex",
+    flexDirection: "row",
+
+  },
+  productImage: {
+    flex: 1,
+    width: "100%",
+    height: undefined,
+    resizeMode: 'contain',
+  }
 });

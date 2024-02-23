@@ -30,17 +30,17 @@ export const STORE_OPTIONS = [
     {
         name: 'Walmart',
         total: 43.45,
-        distance: '22 km'
+        distance: '700 m'
     },
     {
-        name: 'Loblaws',
-        total: 47.45,
-        distance: '27 km'
+        name: 'T&T Supermarket',
+        total: 49.45,
+        distance: '3.3 km'
     },
     {
-        name: 'Longo\'s',
-        total: 53.35,
-        distance: '25 km'
+        name: 'Sobeys',
+        total: 73.35,
+        distance: '700 m'
     },
 ]
 
@@ -84,23 +84,26 @@ export const SEARCH_CATEGORIES = [
     //     ]
     // },
     {
-        name: 'Recipes',
+        name: 'dairy',
         items: [
-            require('../assets/images/produce1.png'),
-            require('../assets/images/produce1.png'),
+            require('../assets/images/dairy3.png'),
+            require('../assets/images/dairy1.png'),
+            require('../assets/images/dairy2.png'),
         ]
     },
     {
         name: 'proteins',
         items: [
             require('../assets/images/proteins1.png'),
-            require('../assets/images/proteins1.png'),
+            require('../assets/images/proteins2.png'),
+            require('../assets/images/proteins3.jpeg'),
         ]
     },
     {
         name: 'produce',
         items: [
-            require('../assets/images/produce1.png'),
+            require('../assets/images/produce3.png'),
+            require('../assets/images/produce2.png'),
             require('../assets/images/produce1.png'),
         ]
     }

@@ -40,7 +40,7 @@ export const MapScreen = ({ navigation }) => {
 
     return (
     <View style={styles.container}>
-      <Text style={styles.test}>{text}</Text>
+      {/*<Text style={styles.test}>{text}</Text>*/}
       <MapView
         style={styles.map}
         initialRegion={{
