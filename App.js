@@ -1,6 +1,6 @@
 import {StyleSheet, View} from 'react-native';
 import {BottomTabNavigator} from "./navigation/BottomTabNavigator";
-import {Inter_400Regular, Inter_700Bold, useFonts} from '@expo-google-fonts/inter';
+import {Inter_400Regular, Inter_700Bold, Inter_500Medium, useFonts} from '@expo-google-fonts/inter';
 import {OnboardingNavigator} from "./navigation/OnboardingNavigator";
 import {NavigationContainer} from "@react-navigation/native";
 import * as SecureStore from 'expo-secure-store';
@@ -8,7 +8,8 @@ import * as SecureStore from 'expo-secure-store';
 export default function App() {
   let [fontsLoaded] = useFonts({
     Inter_400Regular,
-    Inter_700Bold
+    Inter_700Bold,
+    Inter_500Medium
   });
 
   if (!fontsLoaded) {

@@ -14,7 +14,7 @@ export const GroceryStoreGetLocationOptionsScreen = ({ navigation }) => {
                 Where are you located?
             </RegularText>
             <View style={{ display: 'flex', paddingTop: 10, gap: 10 }}>
-                <PrimaryButton label="use current location" onPress={() => navigation.navigate(LIST_STACK.storeSelection)}/>
+                <PrimaryButton label="use current location" onPress={() => navigation.navigate(LIST_STACK.map)}/>
                 <SecondaryButton label="enter your location" onPress={() => navigation.navigate(LIST_STACK.storeGetManualLocation)} />
             </View>
         </View>

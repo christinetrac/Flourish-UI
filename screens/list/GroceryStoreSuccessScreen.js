@@ -11,7 +11,7 @@ export const GroceryStoreSuccessScreen = ({ navigation }) => {
             <BoldText style={{ fontSize: 40, alignSelf: 'flex-start', paddingLeft: 40 }}>Congrats!</BoldText>
             <View style={{ display: 'flex', alignItems: 'center' }}>
                 <Image source={require("../../assets/graphics/partyHat.png")} style={styles.hat} />
-                <RegularText style={{ fontSize: 20 }}>You saved $7.65 with Flourish!</RegularText>
+                <RegularText style={{ fontSize: 20 }}>You saved $29.90 with Flourish!</RegularText>
             </View>
             <PrimaryButton label="complete" onPress={() => navigation.navigate(TAB_OPTIONS.search)} />
         </View>

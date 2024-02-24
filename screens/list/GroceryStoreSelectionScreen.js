@@ -16,7 +16,6 @@ export const GroceryStoreSelectionScreen = ({ navigation }) => {
             <BackButton onPress={() => navigation.pop()} />
             <BoldText style={{ fontSize: 40, alignSelf: 'flex-start', paddingLeft: 40 }}>Optimize your groceries</BoldText>
             <Image source={require('../../assets/graphics/optimize.png')} style={styles.graphic} />
-            <ScrollBlur>
                 <ScrollView style={{ display: 'flex', width: 320 }} showsVerticalScrollIndicator={false}>
                     {storeOptions.map(store => (
                         <GroceryStoreSelect
@@ -26,7 +25,6 @@ export const GroceryStoreSelectionScreen = ({ navigation }) => {
                         />
                     ))}
                 </ScrollView>
-            </ScrollBlur>
         </View>
     )
 }

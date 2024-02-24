@@ -1,7 +1,11 @@
 import React, {useEffect, useState} from "react";
-import { StyleSheet, Text, View } from "react-native";
+import {ScrollView, StyleSheet, Text, View} from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from 'expo-location';
+import {PrimaryButton, PrimaryButtonXS, SecondaryButton} from "../../components/Buttons";
+import {LIST_STACK} from "../../utils/constants";
+import {ScrollBlur} from "../../components/ScrollBlur";
+import {BoldText, RegularText} from "../../components/CustomText";
 
 export const MapScreen = ({ navigation }) => {
   const [destination, setDestination] = useState({
@@ -56,6 +60,9 @@ export const MapScreen = ({ navigation }) => {
                 title="Your Location"
         />
       </MapView>
+        <View style={{position: "absolute", alignSelf: "center", bottom: 50}}>
+            <PrimaryButtonXS label="next" onPress={() => navigation.navigate(LIST_STACK.storeLocationConfirmation)} />
+        </View>
     </View>
   );
 };

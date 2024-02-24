@@ -7,6 +7,13 @@ export const RegularText = props => {
         </Text>
     )
 }
+export const MediumText = props => {
+    return (
+        <Text style={{ fontFamily: 'Inter_500Medium', ...props.style }}>
+            {props.children}
+        </Text>
+    )
+}
 export const RegularClippedText = props => {
     return (
         <Text style={{ fontFamily: 'Inter_400Regular', ...props.style }} numberOfLines={3}>
