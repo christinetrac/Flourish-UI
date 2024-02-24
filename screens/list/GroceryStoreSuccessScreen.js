@@ -13,7 +13,7 @@ export const GroceryStoreSuccessScreen = ({ navigation }) => {
                 <Image source={require("../../assets/graphics/partyHat.png")} style={styles.hat} />
                 <RegularText style={{ fontSize: 20 }}>You saved $7.65 with Flourish!</RegularText>
             </View>
-            <PrimaryButton label="add more items" onPress={() => navigation.navigate(TAB_OPTIONS.search)} />
+            <PrimaryButton label="complete" onPress={() => navigation.navigate(TAB_OPTIONS.search)} />
         </View>
     )
 }

@@ -1,7 +1,15 @@
 import React, {useState} from "react";
 import { BackButton, PrimaryButton } from "../../components/Buttons";
 import {BoldText, RegularText} from "../../components/CustomText";
-import {StyleSheet, TextInput, TouchableOpacity, View} from "react-native";
+import {
+    Keyboard,
+    ScrollView,
+    StyleSheet,
+    TextInput,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    View
+} from "react-native";
 import { TAB_OPTIONS } from "../../utils/constants";
 
 export const BestProductScreen = ({ navigation, route }) => {
@@ -14,6 +22,8 @@ export const BestProductScreen = ({ navigation, route }) => {
     }
 
     return (
+        <TouchableWithoutFeedback onPress={()=> Keyboard.dismiss()} accessible={false}>
+        <ScrollView style={{flex: 1, backgroundColor: '#F6FFF1'}}>
         <View style={styles.container}>
             <BackButton onPress={() => navigation.pop()} />
             <RegularText style={{ fontSize: 40, paddingLeft: 40, alignSelf: 'flex-start', paddingTop: 40 }}>Best Price</RegularText>
@@ -52,6 +62,8 @@ export const BestProductScreen = ({ navigation, route }) => {
             </View>
             <PrimaryButton label="add to list" onPress={handleAddToList} />
         </View>
+            </ScrollView>
+        </TouchableWithoutFeedback>
     )
 }
 

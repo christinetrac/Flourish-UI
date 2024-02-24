@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import { BackButton, PrimaryButton } from "../../components/Buttons";
 import {BoldText, RegularText} from "../../components/CustomText";
-import {Image, ScrollView, StyleSheet, TextInput, View} from "react-native";
+import {Image, Keyboard, ScrollView, StyleSheet, TextInput, TouchableWithoutFeedback, View} from "react-native";
 import { TAB_OPTIONS } from "../../utils/constants";
 
 export const ProductScreen = ({ navigation, route }) => {
@@ -13,6 +13,7 @@ export const ProductScreen = ({ navigation, route }) => {
     }
 
     return (
+        <TouchableWithoutFeedback onPress={()=> Keyboard.dismiss()} accessible={false}>
         <ScrollView style={{flex: 1, backgroundColor: '#F6FFF1'}}>
             <View style={styles.container}>
                 <BackButton onPress={() => navigation.pop()} />
@@ -48,6 +49,7 @@ export const ProductScreen = ({ navigation, route }) => {
                 <PrimaryButton label="add to list" onPress={handleAddToList} />
             </View>
         </ScrollView>
+        </TouchableWithoutFeedback>
     )
 }
 
