@@ -1,9 +1,12 @@
 import {StyleSheet, SafeAreaView, Image, TextInput, Keyboard, TouchableWithoutFeedback, View} from 'react-native';
 import {RegularText} from "../../components/CustomText";
 import {PrimaryButton} from "../../components/Buttons";
-import {ONBOARDING_STACK} from "../../utils/constants";
-import React, {useState} from "react";
+import {HOME_STACK, ONBOARDING_STACK} from "../../utils/constants";
+import React, {useEffect, useState} from "react";
 import * as SecureStore from "expo-secure-store";
+import {v4 as uuidv4} from "uuid";
+import {BottomTabNavigator} from "../../navigation/BottomTabNavigator";
+import {HomeNavigator} from "../../navigation/HomeNavigator";
 
 export const HouseholdQScreen = ({ navigation, route }) => {
     const userId = route?.params?.userId;
@@ -13,12 +16,38 @@ export const HouseholdQScreen = ({ navigation, route }) => {
 
     const [numPeople, onChangeNumPeople] = useState("");
 
+    useEffect(() => {
+        console.log(typeof userId);
+        console.log(typeof name);
+        console.log(typeof distance);
+        console.log(typeof numPeople);
+
+        console.log(userId);
+        console.log(name);
+        console.log(distance);
+        console.log(numPeople);
+    }, [])
+
     const handleSubmit = async () => {
         // send user profile to backend and persist to local storage
-        await SecureStore.setItemAsync('userId', userId.toString());
-
-        // go to homepage
-        navigation.navigate(ONBOARDING_STACK.getStarted);
+        try {
+            await fetch('http://localhost:3000/users', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    "UserID": userId,
+                    "Name": name,
+                    "Distance": parseInt(distance),
+                    "HouseholdSize": parseInt(numPeople),
+                }),
+            })
+        } catch (e) {
+            console.log(e);
+        } finally {
+            // await SecureStore.setItemAsync('tester', userId.toString());
+        }
     }
 
     return (

@@ -1,14 +1,17 @@
+import 'react-native-get-random-values';
 import {Image, SafeAreaView, StyleSheet} from 'react-native';
 import {BoldText} from "../../components/CustomText";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {ONBOARDING_STACK} from "../../utils/constants";
 import {PrimaryButton} from "../../components/Buttons";
-import uuid from "react-native-uuid";
+import { v4 as uuidv4 } from 'uuid';
 
 export const GetStartedScreen = ({ navigation }) => {
-    const createNewUserId = async () => {
-        return uuid.v4();
-    }
+    const [id, setId] = useState("");
+
+    useEffect(() => {
+        setId(uuidv4());
+    }, [])
 
     return (
         <SafeAreaView style={styles.container}>
@@ -16,7 +19,7 @@ export const GetStartedScreen = ({ navigation }) => {
                 Flourish: saving your groceries
             </BoldText>
             <Image source={require('../../assets/graphics/piggy.png')} style={styles.graphic} />
-            <PrimaryButton label="get started" onPress={() => navigation.navigate(ONBOARDING_STACK.name, {userId: createNewUserId()})} />
+            <PrimaryButton label="get started" onPress={() => navigation.navigate(ONBOARDING_STACK.name, {userId: id})} />
         </SafeAreaView>
     );
 }

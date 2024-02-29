@@ -1,5 +1,5 @@
 import React from "react";
-import {StyleSheet, View, Image} from 'react-native';
+import {StyleSheet, View, Image, TouchableOpacity} from 'react-native';
 import {BoldText, MediumText, RegularText} from "../../components/CustomText";
 import {BackButton, PrimaryButton} from "../../components/Buttons";
 import {LIST_STACK} from "../../utils/constants";
@@ -15,17 +15,23 @@ export const GroceryStoreLocationConfirmationScreen = ({ navigation, route }) =>
             <RegularText style={{ fontSize: 24, alignSelf: 'flex-start', paddingLeft: 40, paddingBottom: 10, width: 330 }}>
                 Where are you located?
             </RegularText>
+            <RegularText>
+                {address}
+            </RegularText>
             <View style={{display:"flex", flexDirection: "row", alignItems:"center", paddingBottom:30}}>
                 <View>
                     <MediumText style={{ fontSize: 24, width: 220 }}>
                         330 Phillip St, Waterloo, ON
                     </MediumText>
                 </View>
-                <View style={{paddingLeft: 45}}>
+                <TouchableOpacity
+                    style={{paddingLeft: 45}}
+                    onPress={() => navigation.navigate(LIST_STACK.storeGetLocationOptions)}
+                >
                     <BoldText style={{ fontSize: 20 }}>
                         EDIT
                     </BoldText>
-                </View>
+                </TouchableOpacity>
             </View>
             <RegularText style={{ fontSize: 24, alignSelf: 'flex-start', paddingLeft: 40, width: 330 }}>
                 Search stores within:

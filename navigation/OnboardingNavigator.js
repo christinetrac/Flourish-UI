@@ -13,8 +13,8 @@ export const OnboardingNavigator = () => {
         <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name={ONBOARDING_STACK.getStarted} component={GetStartedScreen} />
             <Stack.Screen name={ONBOARDING_STACK.name} component={NameQScreen} />
-            <Stack.Screen name={ONBOARDING_STACK.household} component={HouseholdQScreen} />
             <Stack.Screen name={ONBOARDING_STACK.distance} component={DistanceQScreen} />
+            <Stack.Screen name={ONBOARDING_STACK.household} component={HouseholdQScreen} />
         </Stack.Navigator>
     );
 };
