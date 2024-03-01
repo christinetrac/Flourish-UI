@@ -1,10 +1,31 @@
 import {StyleSheet, SafeAreaView, View, ScrollView, TouchableOpacity, Image} from 'react-native';
-import {BoldText, RegularText} from "../../components/CustomText";
-import React, {useState} from "react";
+import {BoldText} from "../../components/CustomText";
+import React, {useEffect, useState} from "react";
 import {SEARCH_CATEGORIES} from "../../utils/mockData";
+import * as SecureStore from "expo-secure-store";
 
 export const HomeScreen = ({ navigation }) => {
     const [searchCategories, setSearchCategories] = useState(SEARCH_CATEGORIES);
+
+    let [user, setUser] = useState(null);
+    const getUser = async () => {
+        SecureStore.getItemAsync('ding').then(async id => {
+            console.log(id)
+            await fetch(`http://192.168.1.243:3000/users/${id}`)
+                .then(res => {
+                    res.json().then( data => {
+                        console.log(data);
+                        setUser(data);
+                    })
+                })
+                .catch(e => {
+                    console.log(e)
+                })
+        })
+    }
+    useEffect(() => {
+        getUser();
+    }, [])
 
     const rows = searchCategories.map(category => (
         <View style={{height: 210, width:400, paddingLeft:0, paddingRight:0, alignSelf:'center', paddingTop:10}} key={category.name}>
@@ -28,8 +49,8 @@ export const HomeScreen = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView showsVerticalScrollIndicator={false}>
-                <BoldText style={{ fontSize: 40, width: 300, paddingLeft: 40, paddingTop:40 }} >
-                    Welcome back, John
+                <BoldText style={{ fontSize: 40, width: 340, paddingLeft: 40, paddingTop:40 }} >
+                    Welcome back, {user?.Name}
                 </BoldText>
                 <View style={styles.box}>
                     {rows}

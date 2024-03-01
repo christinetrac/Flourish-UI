@@ -15,7 +15,6 @@ const Tab = createBottomTabNavigator();
 
 const BottomTabNavigator = () => {
   return (
-    <NavigationContainer>
       <Tab.Navigator
         initialRouteName={TAB_OPTIONS.home}
         screenOptions={{
@@ -67,7 +66,6 @@ const BottomTabNavigator = () => {
           }}
         />
       </Tab.Navigator>
-    </NavigationContainer>
   );
 };
 

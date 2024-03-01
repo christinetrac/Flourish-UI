@@ -1,15 +1,12 @@
-import {StyleSheet, View} from 'react-native';
-import {BottomTabNavigator} from "./navigation/BottomTabNavigator";
 import {Inter_400Regular, Inter_500Medium, Inter_700Bold, useFonts} from '@expo-google-fonts/inter';
-import {OnboardingNavigator} from "./navigation/OnboardingNavigator";
-import {NavigationContainer} from "@react-navigation/native";
 import * as SecureStore from 'expo-secure-store';
 import {useEffect, useState} from "react";
+import {Renderer} from "./utils/Renderer";
 
 export default function App() {
   let [storedId, setStoredId] = useState(null);
-  const doesIdExist = async () => {
-    SecureStore.getItemAsync('tester').then(id => {
+  const getId = async () => {
+    SecureStore.getItemAsync('ding').then(id => {
       console.log("promise: " + id)
       if(id !== null){
         setStoredId(id);
@@ -17,8 +14,8 @@ export default function App() {
     });
   }
   useEffect(() => {
-    doesIdExist();
-  }, [doesIdExist()])
+    getId();
+  }, [])
 
   let [fontsLoaded] = useFonts({
     Inter_400Regular,
@@ -32,24 +29,6 @@ export default function App() {
 
   console.log("state: " + storedId)
   return (
-      <View style={styles.container}>
-        {storedId === null ? (
-            <NavigationContainer>
-              <OnboardingNavigator />
-            </NavigationContainer>
-        ):(
-            <BottomTabNavigator style={styles.tab} />
-        )}
-      </View>
+      <Renderer storedId={storedId} />
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F6FFF1',
-  },
-  tab: {
-    zIndex: -1,
-  }
-});

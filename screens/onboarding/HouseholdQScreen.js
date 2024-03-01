@@ -1,12 +1,9 @@
 import {StyleSheet, SafeAreaView, Image, TextInput, Keyboard, TouchableWithoutFeedback, View} from 'react-native';
 import {RegularText} from "../../components/CustomText";
 import {PrimaryButton} from "../../components/Buttons";
-import {HOME_STACK, ONBOARDING_STACK} from "../../utils/constants";
 import React, {useEffect, useState} from "react";
-import * as SecureStore from "expo-secure-store";
-import {v4 as uuidv4} from "uuid";
-import {BottomTabNavigator} from "../../navigation/BottomTabNavigator";
-import {HomeNavigator} from "../../navigation/HomeNavigator";
+import * as SecureStore from 'expo-secure-store';
+import {TAB_OPTIONS} from "../../utils/constants";
 
 export const HouseholdQScreen = ({ navigation, route }) => {
     const userId = route?.params?.userId;
@@ -17,36 +14,33 @@ export const HouseholdQScreen = ({ navigation, route }) => {
     const [numPeople, onChangeNumPeople] = useState("");
 
     useEffect(() => {
-        console.log(typeof userId);
-        console.log(typeof name);
-        console.log(typeof distance);
-        console.log(typeof numPeople);
-
         console.log(userId);
         console.log(name);
         console.log(distance);
         console.log(numPeople);
-    }, [])
+    }, [userId, name, distance, numPeople])
 
     const handleSubmit = async () => {
         // send user profile to backend and persist to local storage
         try {
-            await fetch('http://localhost:3000/users', {
-                method: 'POST',
+            await fetch("http://192.168.1.243:3000/users", {
+                method: "POST",
                 headers: {
-                    'Content-Type': 'application/json',
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
                     "UserID": userId,
                     "Name": name,
-                    "Distance": parseInt(distance),
-                    "HouseholdSize": parseInt(numPeople),
+                    "Distance": parseInt(distance, 10),
+                    "HouseholdSize": parseInt(numPeople, 10),
                 }),
             })
         } catch (e) {
             console.log(e);
         } finally {
-            // await SecureStore.setItemAsync('tester', userId.toString());
+            await SecureStore.setItemAsync('ding', userId.toString());
+            navigation.navigate('BottomTabNavigator', { screen: TAB_OPTIONS.home });
         }
     }
 

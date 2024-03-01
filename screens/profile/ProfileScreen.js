@@ -1,14 +1,35 @@
 import {StyleSheet, Image, SafeAreaView, View, Text} from 'react-native';
 import {PrimaryButton} from "../../components/Buttons";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {BoldText, RegularText} from "../../components/CustomText";
+import * as SecureStore from "expo-secure-store";
 
 export const ProfileScreen = ({ navigation }) => {
+    let [user, setUser] = useState(null);
+    const getUser = async () => {
+        SecureStore.getItemAsync('ding').then(async id => {
+            console.log(id)
+            await fetch(`http://192.168.1.243:3000/users/${id}`)
+                .then(res => {
+                    res.json().then( data => {
+                        console.log(data);
+                        setUser(data);
+                    })
+                })
+                .catch(e => {
+                    console.log(e)
+                })
+        })
+    }
+    useEffect(() => {
+        getUser();
+    }, [])
+
     return (
         <SafeAreaView style={styles.container}>
             <View>
                 <Image source={require('../../assets/images/profile.png')} style={styles.profile} />
-                <BoldText style={{ fontSize: 40, paddingTop:16 }} >John Doe</BoldText>
+                <BoldText style={{ fontSize: 40, paddingTop:16 }} >{user?.Name}</BoldText>
             </View>
             <View>
                 <View style={styles.inputContainer}>
@@ -19,7 +40,7 @@ export const ProfileScreen = ({ navigation }) => {
                     </View>
                     <View style={styles.input}>
                         <RegularText style={{ fontSize: 20, color: "#747474", justifyContent: "center" }}>
-                            2
+                            {user?.HouseholdSize}
                         </RegularText>
                     </View>
                 </View>
@@ -31,7 +52,7 @@ export const ProfileScreen = ({ navigation }) => {
                     </View>
                     <View style={styles.input}>
                         <RegularText style={{ fontSize: 20, color: "#747474", justifyContent: "center" }}>
-                            3 km
+                            {user?.Distance} km
                         </RegularText>
                     </View>
                 </View>
