@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect, useCallback} from "react";
 import {
   StyleSheet,
   View,
@@ -10,11 +10,11 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { test_data } from "../../mock_data/mock_product_data";
 import {RegularText, BoldText, RegularClippedText} from "../../components/CustomText";
 import { SEARCH_STACK } from "../../utils/constants";
 import {PrimaryButton} from "../../components/Buttons";
 import * as SecureStore from "expo-secure-store";
+import { debounce } from 'lodash';
 
 export const SearchScreen = ({ navigation }) => {
   const [user, setUser] = useState(null);
@@ -58,7 +58,6 @@ export const SearchScreen = ({ navigation }) => {
       })
           .then(res => {
             res.json().then(results => {
-              console.log(results);
               if(category === 'seafood'){
                 setSeafood({
                   name: 'seafood',
@@ -88,33 +87,33 @@ export const SearchScreen = ({ navigation }) => {
 
   const [search, setSearch] = useState("");
   const [submitted, setSubmitted] = useState(false);
-  const [filteredDataSource, setFilteredDataSource] = useState(test_data);
-  const [masterDataSource, setMasterDataSource] = useState(test_data);
+  const [filteredDataSource, setFilteredDataSource] = useState([]);
 
-  const searchFilterFunction = (text) => {
-    // Check if searched text is not blank
-    if (text) {
-      // Inserted text is not blank
-      // Filter the masterDataSource and update FilteredDataSource
-      const newData = masterDataSource.filter(function (item) {
-        // Applying filter for the inserted text in search bar
-        const itemData = item.ProductName
-          ? item.ProductName.toUpperCase()
-          : "".toUpperCase();
-        const textData = text.toUpperCase();
-        return itemData.indexOf(textData) > -1;
-      });
-      setFilteredDataSource(newData);
-      setSearch(text);
-      setSubmitted(false);
-    } else {
-      // Inserted text is blank
-      // Update FilteredDataSource with masterDataSource
-      setFilteredDataSource(masterDataSource);
-      setSearch(text);
+  const getQueryResults = async () => {
+    const transformedString = search.split(' ').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
+    await fetch(`http://192.168.1.243:3000/search/${transformedString}`, {
+      Accept: "application/json",
+      "Content-type": "application/json"
+    }).then(res => {
+      res.json().then(results => {
+        // console.log(results);
+        setFilteredDataSource(results);
+      }).catch(e => console.log(e))
+    }).catch(e => console.log(e))
+  }
+
+  const debouncedFetch = useCallback(
+      debounce(getQueryResults, 500),
+      [search],
+  );
+
+  useEffect(() => {
+    if(search){
+      debouncedFetch();
+    }else {
       setSubmitted(false);
     }
-  };
+  }, [search])
 
   const rows = [seafood, eggs, cannedGoods]?.map(category => (
       <View style={{height: 210, width:400, paddingLeft:0, paddingRight:0, alignSelf:'center', paddingTop:20}} key={category.name}>
@@ -123,7 +122,7 @@ export const SearchScreen = ({ navigation }) => {
         </View>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
           {category?.items?.map(item => (
-              <TouchableOpacity style={{zIndex:10}} key={item?.ProductName} onPress={() => undefined}>
+              <TouchableOpacity style={{zIndex:10}} key={item?.ProductName} onPress={() => navigation.navigate(SEARCH_STACK.product, {item: item})}>
                 <View style={{marginRight:10, marginLeft:15}}>
                   <View style={[styles.card, styles.shadowProp]}>
                     <Image source={{uri:item?.ProductPhotoUrl}} style={styles.image}/>
@@ -169,15 +168,15 @@ export const SearchScreen = ({ navigation }) => {
               onPress={() => navigation.navigate(SEARCH_STACK.bestProductScreen, { query: search })}
           />
           <BoldText style={{fontSize: 32, paddingLeft: 40, paddingVertical: 20}}>Specific Products</BoldText>
-          {filteredDataSource.map((item) => (
+          {filteredDataSource?.map((item) => (
               <TouchableOpacity
                   key={item.ProductName}
                   style={[styles.productCard, styles.productCardShadowProp]}
                   onPress={() =>
-                      navigation.navigate(SEARCH_STACK.product, { item: item })
+                      navigation.navigate(SEARCH_STACK.product, { item: item, query: search })
                   }
               >
-                  <Image source={item.Picture} style={styles.productImage} />
+                  <Image source={{uri:item?.ProductPhotoUrl}} style={styles.productImage} />
                   <RegularClippedText
                       numberOfLines={1}
                       style={{ fontSize: 18, textTransform: "capitalize", width: 170, alignSelf: "center" }}
@@ -206,7 +205,7 @@ export const SearchScreen = ({ navigation }) => {
           />
           <TextInput
             style={styles.textInputStyle}
-            onChangeText={(text) => searchFilterFunction(text)}
+            onChangeText={(text) => setSearch(text)}
             value={search}
             underlineColorAndroid="transparent"
             onSubmitEditing={handleSubmitEditing}

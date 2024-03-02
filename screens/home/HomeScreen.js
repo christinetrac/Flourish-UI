@@ -2,6 +2,7 @@ import {StyleSheet, SafeAreaView, View, ScrollView, TouchableOpacity, Image} fro
 import {BoldText} from "../../components/CustomText";
 import React, {useEffect, useState} from "react";
 import * as SecureStore from "expo-secure-store";
+import {HOME_STACK, SEARCH_STACK} from "../../utils/constants";
 
 export const HomeScreen = ({ navigation }) => {
     const [user, setUser] = useState(null);
@@ -50,7 +51,6 @@ export const HomeScreen = ({ navigation }) => {
             })
                 .then(res => {
                     res.json().then(results => {
-                        console.log(results);
                         if(category === 'fruits and vegetables'){
                             setFruitsAndVegetables({
                                 name: 'fruits and vegetables',
@@ -90,7 +90,7 @@ export const HomeScreen = ({ navigation }) => {
             </View>
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                 {category?.items?.map(item => (
-                    <TouchableOpacity style={{zIndex:10}} key={item?.ProductName} onPress={() => undefined}>
+                    <TouchableOpacity style={{zIndex:10}} key={item?.ProductName} onPress={() => navigation.navigate(SEARCH_STACK.product, {item: item})}>
                         <View style={{marginRight:10, marginLeft:15}}>
                             <View style={[styles.card, styles.shadowProp]}>
                                 <Image source={{uri:item?.ProductPhotoUrl}} style={styles.image}/>

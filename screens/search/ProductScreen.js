@@ -6,6 +6,7 @@ import { TAB_OPTIONS } from "../../utils/constants";
 
 export const ProductScreen = ({ navigation, route }) => {
     const item = route?.params?.item;
+    const query = route?.params?.query;
     const [count, onCountChange] = useState("");
 
     const handleAddToList = () => {
@@ -23,7 +24,7 @@ export const ProductScreen = ({ navigation, route }) => {
                             {item.Store}
                         </BoldText>
                     </View>
-                    <Image source={item.Picture} style={styles.image} />
+                    <Image source={{uri:item?.ProductPhotoUrl}} style={styles.image} />
                 </View>
                 <RegularText style={{ fontSize: 32, alignSelf: 'flex-start', paddingTop: 20, paddingBottom: 20 }}>{item.ProductName}</RegularText>
                 <RegularText style={{ fontSize: 24, alignSelf: 'flex-start', paddingTop: 10 }}>
@@ -44,8 +45,12 @@ export const ProductScreen = ({ navigation, route }) => {
                         placeholderTextColor="#747474"
                     />
                 </View>
-                <RegularText style={{ fontSize: 24, alignSelf: 'flex-start' }}>Price: $9.99</RegularText>
-                <RegularText style={{ fontSize: 24, alignSelf: 'flex-start', paddingBottom: 20 }}>Price Per Unit: $0.55</RegularText>
+                <RegularText style={{ fontSize: 24, alignSelf: 'flex-start' }}>Price: ${item?.Price}</RegularText>
+                {item?.PricePerUnit !== "NULL" ? (
+                    <RegularText style={{ fontSize: 24, alignSelf: 'flex-start', paddingBottom: 20 }}>Price Per Unit: ${item?.PricePerUnit}</RegularText>
+                ) : (
+                    <View style={{ paddingBottom: 20 }} />
+                )}
                 <PrimaryButton label="add to list" onPress={handleAddToList} />
             </View>
         </ScrollView>
@@ -66,7 +71,8 @@ const styles = StyleSheet.create({
     card: {
         marginVertical: 20,
         width: 310,
-        height: 210,
+        height: 230,
+        padding: 10,
         backgroundColor: '#fff',
         borderRadius: 14,
         shadowColor: '#DCDCDC',
