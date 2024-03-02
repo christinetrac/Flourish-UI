@@ -39,7 +39,7 @@ export const HouseholdQScreen = ({ navigation, route }) => {
         } catch (e) {
             console.log(e);
         } finally {
-            await SecureStore.setItemAsync('ding', userId.toString());
+            await SecureStore.setItemAsync('demo', userId.toString());
             navigation.navigate('BottomTabNavigator', { screen: TAB_OPTIONS.home });
         }
     }

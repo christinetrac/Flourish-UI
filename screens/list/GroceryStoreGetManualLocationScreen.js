@@ -17,7 +17,9 @@ export const GroceryStoreGetManualLocationScreen = ({ navigation }) => {
                 placeholder="Enter your address"
                 query={{key: ""}}
                 fetchDetails={true}
-                onPress={(data, details = null) => navigation.navigate(LIST_STACK.storeLocationConfirmation, {address: data})}
+                onPress={(data, details = null) => {
+                    navigation.navigate(LIST_STACK.storeLocationConfirmation, {address: data.description})
+                }}
                 onFail={error => console.log(error)}
                 onNotFound={() => console.log('no results')}
                 textInputProps={{

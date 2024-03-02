@@ -74,37 +74,3 @@ export const OPTIMIZED_GROCERIES = [
         price: 15.05
     }
 ]
-
-export const SEARCH_CATEGORIES = [
-    // {
-    //     name: 'recipes',
-    //     items: [
-    //         require('../assets/images/recipes1.png'),
-    //         require('../assets/images/recipes2.png')
-    //     ]
-    // },
-    {
-        name: 'dairy',
-        items: [
-            require('../assets/images/dairy3.png'),
-            require('../assets/images/dairy1.png'),
-            require('../assets/images/dairy2.png'),
-        ]
-    },
-    {
-        name: 'proteins',
-        items: [
-            require('../assets/images/proteins1.png'),
-            require('../assets/images/proteins2.png'),
-            require('../assets/images/proteins3.jpeg'),
-        ]
-    },
-    {
-        name: 'produce',
-        items: [
-            require('../assets/images/produce3.png'),
-            require('../assets/images/produce2.png'),
-            require('../assets/images/produce1.png'),
-        ]
-    }
-]

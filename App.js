@@ -6,7 +6,7 @@ import {Renderer} from "./utils/Renderer";
 export default function App() {
   let [storedId, setStoredId] = useState(null);
   const getId = async () => {
-    SecureStore.getItemAsync('ding').then(id => {
+    SecureStore.getItemAsync('demo').then(id => {
       console.log("promise: " + id)
       if(id !== null){
         setStoredId(id);

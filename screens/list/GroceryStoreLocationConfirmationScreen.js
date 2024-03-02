@@ -15,9 +15,6 @@ export const GroceryStoreLocationConfirmationScreen = ({ navigation, route }) =>
             <RegularText style={{ fontSize: 24, alignSelf: 'flex-start', paddingLeft: 40, paddingBottom: 10, width: 330 }}>
                 Where are you located?
             </RegularText>
-            <RegularText>
-                {address}
-            </RegularText>
             <View style={{display:"flex", flexDirection: "row", alignItems:"center", paddingBottom:30}}>
                 <View>
                     <MediumText style={{ fontSize: 24, width: 220 }}>

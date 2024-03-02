@@ -1,21 +1,39 @@
 import {StyleSheet, SafeAreaView, View, ScrollView, TouchableOpacity, Image} from 'react-native';
 import {BoldText} from "../../components/CustomText";
 import React, {useEffect, useState} from "react";
-import {SEARCH_CATEGORIES} from "../../utils/mockData";
 import * as SecureStore from "expo-secure-store";
 
 export const HomeScreen = ({ navigation }) => {
-    const [searchCategories, setSearchCategories] = useState(SEARCH_CATEGORIES);
+    const [user, setUser] = useState(null);
+    const [fruitsAndVegetables, setFruitsAndVegetables] = useState({
+        name: 'fruits and vegetables',
+        items: []
+    });
 
-    let [user, setUser] = useState(null);
+    const [meat, setMeat] = useState({
+        name: 'meat',
+        items: []
+    });
+
+    const [dairy, setDairy] = useState({
+        name: 'dairy',
+        items: []
+    });
+
+    const [bread, setBread] = useState({
+        name: 'bread',
+        items: []
+    });
+
+    const categories = ['fruits and vegetables', 'meat', 'dairy', 'bread'];
     const getUser = async () => {
-        SecureStore.getItemAsync('ding').then(async id => {
-            console.log(id)
+        SecureStore.getItemAsync('demo').then(async id => {
             await fetch(`http://192.168.1.243:3000/users/${id}`)
                 .then(res => {
-                    res.json().then( data => {
-                        console.log(data);
+                    res.json().then(data => {
                         setUser(data);
+                    }).catch(e => {
+                        console.log(e)
                     })
                 })
                 .catch(e => {
@@ -23,21 +41,59 @@ export const HomeScreen = ({ navigation }) => {
                 })
         })
     }
+
+    const getCategories = async () => {
+        for await (const category of categories) {
+            fetch(`http://192.168.1.243:3000/search/category/${category}`, {
+                Accept: "application/json",
+                "Content-type": "application/json"
+            })
+                .then(res => {
+                    res.json().then(results => {
+                        console.log(results);
+                        if(category === 'fruits and vegetables'){
+                            setFruitsAndVegetables({
+                                name: 'fruits and vegetables',
+                                items: results
+                            })
+                        }else if(category === 'meat'){
+                            setMeat({
+                                name: 'meat',
+                                items: results
+                            })
+                        }else if(category === 'dairy'){
+                            setDairy({
+                                name: 'dairy',
+                                items: results
+                            })
+                        }else if(category === 'bread'){
+                            setBread({
+                                name: 'bread',
+                                items: results
+                            })
+                        }
+                    }).catch(e => console.log(e))
+                }).catch(e => {
+                    console.log(e)
+                })
+        }
+    }
     useEffect(() => {
         getUser();
+        getCategories();
     }, [])
 
-    const rows = searchCategories.map(category => (
+    const rows = [dairy, bread, meat, fruitsAndVegetables]?.map(category => (
         <View style={{height: 210, width:400, paddingLeft:0, paddingRight:0, alignSelf:'center', paddingTop:10}} key={category.name}>
             <View style={{flexDirection:'row'}}>
                 <BoldText style={{fontSize: 32, alignSelf: 'flex-start', paddingLeft: 16, paddingBottom: 8, textTransform: 'capitalize'}}>{category.name}</BoldText>
             </View>
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                {category.items.map(image => (
-                    <TouchableOpacity style={{zIndex:10}} key={image} onPress={() => undefined}>
+                {category?.items?.map(item => (
+                    <TouchableOpacity style={{zIndex:10}} key={item?.ProductName} onPress={() => undefined}>
                         <View style={{marginRight:10, marginLeft:15}}>
                             <View style={[styles.card, styles.shadowProp]}>
-                                <Image source={image} style={styles.image}/>
+                                <Image source={{uri:item?.ProductPhotoUrl}} style={styles.image}/>
                             </View>
                         </View>
                     </TouchableOpacity>
@@ -76,6 +132,7 @@ const styles = StyleSheet.create({
             width: 0,
             height: 2,
         },
+        padding: 10
     },
     image: {
         flex: 1,

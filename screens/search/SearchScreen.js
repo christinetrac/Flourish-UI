@@ -11,13 +11,80 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { test_data } from "../../mock_data/mock_product_data";
-import { SEARCH_CATEGORIES } from "../../utils/mockData";
 import {RegularText, BoldText, RegularClippedText} from "../../components/CustomText";
 import { SEARCH_STACK } from "../../utils/constants";
 import {PrimaryButton} from "../../components/Buttons";
+import * as SecureStore from "expo-secure-store";
 
 export const SearchScreen = ({ navigation }) => {
-  const [searchCategories, setSearchCategories] = useState(SEARCH_CATEGORIES);
+  const [user, setUser] = useState(null);
+  const [seafood, setSeafood] = useState({
+    name: 'seafood',
+    items: []
+  });
+
+  const [eggs, setEggs] = useState({
+    name: 'eggs',
+    items: []
+  });
+
+  const [cannedGoods, setCannedGoods] = useState({
+    name: 'canned goods',
+    items: []
+  });
+
+  const categories = ['seafood', 'eggs', 'canned goods'];
+  const getUser = async () => {
+    SecureStore.getItemAsync('demo').then(async id => {
+      await fetch(`http://192.168.1.243:3000/users/${id}`)
+          .then(res => {
+            res.json().then(data => {
+              setUser(data);
+            }).catch(e => {
+              console.log(e)
+            })
+          })
+          .catch(e => {
+            console.log(e)
+          })
+    })
+  }
+
+  const getCategories = async () => {
+    for await (const category of categories) {
+      fetch(`http://192.168.1.243:3000/search/category/${category}`, {
+        Accept: "application/json",
+        "Content-type": "application/json"
+      })
+          .then(res => {
+            res.json().then(results => {
+              console.log(results);
+              if(category === 'seafood'){
+                setSeafood({
+                  name: 'seafood',
+                  items: results
+                })
+              }else if(category === 'eggs'){
+                setEggs({
+                  name: 'eggs',
+                  items: results
+                })
+              }else if(category === 'canned goods'){
+                setCannedGoods({
+                  name: 'canned goods',
+                  items: results
+                })
+              }
+            }).catch(e => console.log(e))
+          }).catch(e => {
+        console.log(e)
+      })
+    }
+  }
+  useEffect(() => {
+    getUser();
+    getCategories();
+  }, [])
 
   const [search, setSearch] = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -49,17 +116,17 @@ export const SearchScreen = ({ navigation }) => {
     }
   };
 
-  const rows = searchCategories.map(category => (
+  const rows = [seafood, eggs, cannedGoods]?.map(category => (
       <View style={{height: 210, width:400, paddingLeft:0, paddingRight:0, alignSelf:'center', paddingTop:20}} key={category.name}>
         <View style={{flexDirection:'row'}}>
           <BoldText style={{fontSize: 32, alignSelf: 'flex-start', paddingLeft: 16, paddingBottom: 8, textTransform: 'capitalize'}}>{category.name}</BoldText>
         </View>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-          {category.items.map(image => (
-              <TouchableOpacity style={{zIndex:10}} key={image} onPress={() => undefined}>
+          {category?.items?.map(item => (
+              <TouchableOpacity style={{zIndex:10}} key={item?.ProductName} onPress={() => undefined}>
                 <View style={{marginRight:10, marginLeft:15}}>
                   <View style={[styles.card, styles.shadowProp]}>
-                    <Image source={image} style={styles.image}/>
+                    <Image source={{uri:item?.ProductPhotoUrl}} style={styles.image}/>
                   </View>
                 </View>
               </TouchableOpacity>
@@ -201,6 +268,7 @@ const styles = StyleSheet.create({
     marginBottom: 30
   },
   card: {
+    padding: 10,
     width: 176,
     height: 129,
     backgroundColor: '#fff',

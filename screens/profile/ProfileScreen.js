@@ -7,7 +7,7 @@ import * as SecureStore from "expo-secure-store";
 export const ProfileScreen = ({ navigation }) => {
     let [user, setUser] = useState(null);
     const getUser = async () => {
-        SecureStore.getItemAsync('ding').then(async id => {
+        SecureStore.getItemAsync('demo').then(async id => {
             console.log(id)
             await fetch(`http://192.168.1.243:3000/users/${id}`)
                 .then(res => {
@@ -29,7 +29,7 @@ export const ProfileScreen = ({ navigation }) => {
         <SafeAreaView style={styles.container}>
             <View>
                 <Image source={require('../../assets/images/profile.png')} style={styles.profile} />
-                <BoldText style={{ fontSize: 40, paddingTop:16 }} >{user?.Name}</BoldText>
+                <BoldText style={{ fontSize: 40, paddingTop:16, alignSelf: "center" }} >{user?.Name}</BoldText>
             </View>
             <View>
                 <View style={styles.inputContainer}>
