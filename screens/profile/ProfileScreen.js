@@ -1,4 +1,4 @@
-import {StyleSheet, Image, SafeAreaView, View, Text} from 'react-native';
+import {StyleSheet, Image, SafeAreaView, View} from 'react-native';
 import {PrimaryButton} from "../../components/Buttons";
 import React, {useEffect, useState} from "react";
 import {BoldText, RegularText} from "../../components/CustomText";
@@ -7,7 +7,7 @@ import * as SecureStore from "expo-secure-store";
 export const ProfileScreen = ({ navigation }) => {
     let [user, setUser] = useState(null);
     const getUser = async () => {
-        SecureStore.getItemAsync('demo').then(async id => {
+        SecureStore.getItemAsync('new').then(async id => {
             console.log(id)
             await fetch(`http://192.168.1.243:3000/users/${id}`)
                 .then(res => {
@@ -52,7 +52,7 @@ export const ProfileScreen = ({ navigation }) => {
                     </View>
                     <View style={styles.input}>
                         <RegularText style={{ fontSize: 20, color: "#747474", justifyContent: "center" }}>
-                            {user?.Distance} km
+                            {user?.Distance} {user?.Units}
                         </RegularText>
                     </View>
                 </View>

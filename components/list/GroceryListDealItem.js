@@ -1,13 +1,21 @@
 import { StyleSheet, View } from 'react-native';
-import { RegularText } from "../CustomText";
+import {BoldText, RegularText} from "../CustomText";
 
-export const GroceryListItem = ({item}) => {
+export const GroceryListDealItem = ({item}) => {
     return (
         <View style={styles.container}>
             <RegularText style={{ fontSize: 40, paddingRight: 18 }}>{item.Quantity}</RegularText>
             <View>
-                <RegularText style={{ fontSize: 20, paddingBottom:6, width: 230 }}>{item.Product.ProductName}</RegularText>
-                <RegularText style={{ fontSize: 20, color: '#6A6A6A' }}>{item.Product.Price} each</RegularText>
+                <BoldText style={{ fontSize: 20, color: '#445601' }}>{item.UserQuery}</BoldText>
+                {item.LowestPrice === "PricePerUnit" ? (
+                    <RegularText style={{ fontSize: 20, color: '#6A6A6A' }}>
+                        lowest price per unit
+                    </RegularText>
+                ) : (
+                    <RegularText style={{ fontSize: 20, color: '#6A6A6A' }}>
+                        lowest item price
+                    </RegularText>
+                )}
             </View>
         </View>
     )
@@ -16,6 +24,7 @@ export const GroceryListItem = ({item}) => {
 const styles = StyleSheet.create({
     container: {
         width: 310,
+        height: 88,
         backgroundColor: '#FFF',
         borderRadius: 14,
         shadowColor: '#DCDCDC',

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { BackButton, PrimaryButton } from "../../components/Buttons";
 import {BoldText, RegularText} from "../../components/CustomText";
 import {
@@ -11,14 +11,55 @@ import {
     View
 } from "react-native";
 import { TAB_OPTIONS } from "../../utils/constants";
+import * as SecureStore from "expo-secure-store";
 
 export const BestProductScreen = ({ navigation, route }) => {
     const query = route?.params?.query;
     const [count, onCountChange] = useState("");
-    const [lowestPriceOption, setLowestPriceOption] = useState("price_item");
+    const [lowestPriceOption, setLowestPriceOption] = useState("ItemPrice");
 
-    const handleAddToList = () => {
-        navigation.navigate(TAB_OPTIONS.list);
+    const [user, setUser] = useState(null);
+    const getUser = async () => {
+        SecureStore.getItemAsync('new').then(async id => {
+            await fetch(`http://192.168.1.243:3000/users/${id}`)
+                .then(res => {
+                    res.json().then(data => {
+                        setUser(data);
+                    }).catch(e => {
+                        console.log(e)
+                    })
+                })
+                .catch(e => {
+                    console.log(e)
+                })
+        })
+    }
+    useEffect(() => {
+        getUser();
+    }, [])
+
+    const handleAddToList = async () => {
+        const transformedString = query.split(' ').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
+        try {
+            await fetch("http://192.168.1.243:3000/cart", {
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    "UserID": user.UserID,
+                    "Product": {},
+                    "Quantity": parseInt(count, 10),
+                    "UserQuery": transformedString,
+                    "LowestPrice": lowestPriceOption
+                }),
+            })
+        } catch(e) {
+            console.log(e);
+        } finally {
+            navigation.navigate(TAB_OPTIONS.list);
+        }
     }
 
     return (
@@ -53,11 +94,11 @@ export const BestProductScreen = ({ navigation, route }) => {
                 Lowest Price Preference
             </RegularText>
             <View style={styles.quality}>
-                <TouchableOpacity style={lowestPriceOption === 'price_item' ? styles.qualityButtonActive : styles.qualityButton} onPress={() => setLowestPriceOption('price_item')}>
-                    <BoldText style={lowestPriceOption === 'price_item' ? styles.qualityTextActive : styles.qualityText}>Item Price</BoldText>
+                <TouchableOpacity style={lowestPriceOption === 'ItemPrice' ? styles.qualityButtonActive : styles.qualityButton} onPress={() => setLowestPriceOption('ItemPrice')}>
+                    <BoldText style={lowestPriceOption === 'ItemPrice' ? styles.qualityTextActive : styles.qualityText}>Item Price</BoldText>
                 </TouchableOpacity>
-                <TouchableOpacity style={lowestPriceOption === 'price_per_unit' ? styles.qualityButtonActive : styles.qualityButton} onPress={() => setLowestPriceOption('price_per_unit')}>
-                    <BoldText style={lowestPriceOption === 'price_per_unit' ? styles.qualityTextActive : styles.qualityText}>Price Per Unit</BoldText>
+                <TouchableOpacity style={lowestPriceOption === 'PricePerUnit' ? styles.qualityButtonActive : styles.qualityButton} onPress={() => setLowestPriceOption('PricePerUnit')}>
+                    <BoldText style={lowestPriceOption === 'PricePerUnit' ? styles.qualityTextActive : styles.qualityText}>Price Per Unit</BoldText>
                 </TouchableOpacity>
             </View>
             <PrimaryButton label="add to list" onPress={handleAddToList} />

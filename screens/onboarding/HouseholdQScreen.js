@@ -33,13 +33,14 @@ export const HouseholdQScreen = ({ navigation, route }) => {
                     "UserID": userId,
                     "Name": name,
                     "Distance": parseInt(distance, 10),
+                    "Units": unit,
                     "HouseholdSize": parseInt(numPeople, 10),
                 }),
             })
         } catch (e) {
             console.log(e);
         } finally {
-            await SecureStore.setItemAsync('demo', userId.toString());
+            await SecureStore.setItemAsync('new', userId.toString());
             navigation.navigate('BottomTabNavigator', { screen: TAB_OPTIONS.home });
         }
     }

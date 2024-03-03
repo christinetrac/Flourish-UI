@@ -1,28 +1,74 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { StyleSheet, View, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { TAB_OPTIONS, LIST_STACK } from "../../utils/constants";
 import { PrimaryButton, SecondaryButton } from "../../components/Buttons";
 import { BoldText, RegularText } from "../../components/CustomText";
 import { GroceryListItem } from "../../components/list/GroceryListItem";
+import { GroceryListDealItem } from "../../components/list/GroceryListDealItem";
 import { ScrollBlur } from "../../components/ScrollBlur";
-import { GROCERY_LIST } from "../../utils/mockData";
+import * as SecureStore from "expo-secure-store";
+import { useIsFocused } from '@react-navigation/native'
 
 export const GroceryListScreen = ({ navigation }) => {
-    const [groceryList, setGroceryList] = useState(GROCERY_LIST);
+    const isFocused = useIsFocused();
+    const [userId, setUserId] = useState(null);
+    const [groceryList, setGroceryList] = useState([]);
 
-    const clearGroceryList = () => {
-        setGroceryList([]);
+    const getGroceryList = async () => {
+        SecureStore.getItemAsync('new').then(async id => {
+            await fetch(`http://192.168.1.243:3000/users/${id}`)
+                .then(res => {
+                    res.json().then(async data => {
+                        const id = data.UserID;
+                        setUserId(id);
+                        await fetch(`http://192.168.1.243:3000/cart/${id}`, {
+                            Accept: "application/json",
+                            "Content-type": "application/json"
+                        })
+                            .then(res => {
+                                res.json().then(list => {
+                                    setGroceryList(JSON.parse(list));
+                                }).catch(e => console.log(e))
+                            }).catch(e => console.log(e))
+                    }).catch(e => {
+                        console.log(e)
+                    })
+                })
+                .catch(e => {
+                    console.log(e)
+                })
+        })
+    }
+    useEffect(() => {
+        if(isFocused){
+            getGroceryList();
+        }
+    }, [isFocused])
+
+    const clearGroceryList = async () => {
+        await fetch(`http://192.168.1.243:3000/cart/empty/${userId}`, {
+            Accept: "application/json",
+            "Content-type": "application/json"
+        })
+        .then(() => {
+            setGroceryList([]);
+        })
+        .catch(e => console.log(e))
     }
 
     return (
         <View style={groceryList.length ? styles.list : styles.container}>
             <BoldText style={{ fontSize: 40, alignSelf: 'flex-start', paddingLeft: 40, paddingBottom: 15 }}>Grocery List</BoldText>
-            {groceryList.length ? (
+            {groceryList.length !== 0 ? (
                 <ScrollBlur>
                     <ScrollView style={{ display: 'flex', width: 318, paddingTop: 10 }} showsVerticalScrollIndicator={false}>
-                        {groceryList.map((item, i) =>
-                            <GroceryListItem item={item} key={i} />
-                        )}
+                        {groceryList?.map(item => (
+                            Object.keys(item.Product).length ? (
+                                <GroceryListItem item={item} key={item.UserQuery} />
+                                ) : (
+                                <GroceryListDealItem item={item} key={item.UserQuery} />
+                                )
+                        ))}
                         <TouchableOpacity onPress={clearGroceryList}>
                             <RegularText style={styles.clearListText}>Clear grocery list</RegularText>
                         </TouchableOpacity>

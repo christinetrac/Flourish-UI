@@ -2,7 +2,7 @@ import {StyleSheet, SafeAreaView, View, ScrollView, TouchableOpacity, Image} fro
 import {BoldText} from "../../components/CustomText";
 import React, {useEffect, useState} from "react";
 import * as SecureStore from "expo-secure-store";
-import {HOME_STACK, SEARCH_STACK} from "../../utils/constants";
+import {SEARCH_STACK} from "../../utils/constants";
 
 export const HomeScreen = ({ navigation }) => {
     const [user, setUser] = useState(null);
@@ -28,7 +28,7 @@ export const HomeScreen = ({ navigation }) => {
 
     const categories = ['fruits and vegetables', 'meat', 'dairy', 'bread'];
     const getUser = async () => {
-        SecureStore.getItemAsync('demo').then(async id => {
+        SecureStore.getItemAsync('new').then(async id => {
             await fetch(`http://192.168.1.243:3000/users/${id}`)
                 .then(res => {
                     res.json().then(data => {

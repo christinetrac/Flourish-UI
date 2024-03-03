@@ -1,11 +1,32 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {StyleSheet, View, Image, TouchableOpacity} from 'react-native';
 import {BoldText, MediumText, RegularText} from "../../components/CustomText";
 import {BackButton, PrimaryButton} from "../../components/Buttons";
 import {LIST_STACK} from "../../utils/constants";
+import * as SecureStore from "expo-secure-store";
 
 export const GroceryStoreLocationConfirmationScreen = ({ navigation, route }) => {
     const address = route?.params?.address;
+
+    let [user, setUser] = useState(null);
+    const getUser = async () => {
+        SecureStore.getItemAsync('new').then(async id => {
+            console.log(id)
+            await fetch(`http://192.168.1.243:3000/users/${id}`)
+                .then(res => {
+                    res.json().then( data => {
+                        console.log(data);
+                        setUser(data);
+                    })
+                })
+                .catch(e => {
+                    console.log(e)
+                })
+        })
+    }
+    useEffect(() => {
+        getUser();
+    }, [])
 
     return (
         <View style={styles.container}>
@@ -41,7 +62,7 @@ export const GroceryStoreLocationConfirmationScreen = ({ navigation, route }) =>
                 </View>
                 <View style={styles.input}>
                     <RegularText style={{ fontSize: 20, color: "#747474", justifyContent: "center" }}>
-                        5 km
+                        {user?.Distance} {user?.Units}
                     </RegularText>
                 </View>
             </View>

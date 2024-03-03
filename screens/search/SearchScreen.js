@@ -13,11 +13,9 @@ import { Ionicons } from "@expo/vector-icons";
 import {RegularText, BoldText, RegularClippedText} from "../../components/CustomText";
 import { SEARCH_STACK } from "../../utils/constants";
 import {PrimaryButton} from "../../components/Buttons";
-import * as SecureStore from "expo-secure-store";
 import { debounce } from 'lodash';
 
 export const SearchScreen = ({ navigation }) => {
-  const [user, setUser] = useState(null);
   const [seafood, setSeafood] = useState({
     name: 'seafood',
     items: []
@@ -34,22 +32,6 @@ export const SearchScreen = ({ navigation }) => {
   });
 
   const categories = ['seafood', 'eggs', 'canned goods'];
-  const getUser = async () => {
-    SecureStore.getItemAsync('demo').then(async id => {
-      await fetch(`http://192.168.1.243:3000/users/${id}`)
-          .then(res => {
-            res.json().then(data => {
-              setUser(data);
-            }).catch(e => {
-              console.log(e)
-            })
-          })
-          .catch(e => {
-            console.log(e)
-          })
-    })
-  }
-
   const getCategories = async () => {
     for await (const category of categories) {
       fetch(`http://192.168.1.243:3000/search/category/${category}`, {
@@ -81,7 +63,6 @@ export const SearchScreen = ({ navigation }) => {
     }
   }
   useEffect(() => {
-    getUser();
     getCategories();
   }, [])
 
@@ -122,7 +103,7 @@ export const SearchScreen = ({ navigation }) => {
         </View>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
           {category?.items?.map(item => (
-              <TouchableOpacity style={{zIndex:10}} key={item?.ProductName} onPress={() => navigation.navigate(SEARCH_STACK.product, {item: item})}>
+              <TouchableOpacity style={{zIndex:10}} key={item?.ProductName} onPress={() => navigation.navigate(SEARCH_STACK.product, {item: item, query: search})}>
                 <View style={{marginRight:10, marginLeft:15}}>
                   <View style={[styles.card, styles.shadowProp]}>
                     <Image source={{uri:item?.ProductPhotoUrl}} style={styles.image}/>
@@ -145,7 +126,7 @@ export const SearchScreen = ({ navigation }) => {
                   key={item.ProductName}
                   style={{ marginBottom: 10, paddingHorizontal: 20 }}
                   onPress={() =>
-                      navigation.navigate(SEARCH_STACK.product, { item: item })
+                      navigation.navigate(SEARCH_STACK.product, { item: item, query: search })
                   }
               >
                 <View style={{ marginTop: 10 }}>
@@ -173,7 +154,7 @@ export const SearchScreen = ({ navigation }) => {
                   key={item.ProductName}
                   style={[styles.productCard, styles.productCardShadowProp]}
                   onPress={() =>
-                      navigation.navigate(SEARCH_STACK.product, { item: item, query: search })
+                      navigation.navigate(SEARCH_STACK.product, { item: item, query: search})
                   }
               >
                   <Image source={{uri:item?.ProductPhotoUrl}} style={styles.productImage} />

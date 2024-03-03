@@ -1,17 +1,59 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { BackButton, PrimaryButton } from "../../components/Buttons";
 import {BoldText, RegularText} from "../../components/CustomText";
 import {Image, Keyboard, ScrollView, StyleSheet, TextInput, TouchableWithoutFeedback, View} from "react-native";
 import { TAB_OPTIONS } from "../../utils/constants";
+import * as SecureStore from "expo-secure-store";
 
 export const ProductScreen = ({ navigation, route }) => {
     const item = route?.params?.item;
     const query = route?.params?.query;
     const [count, onCountChange] = useState("");
 
-    const handleAddToList = () => {
-        navigation.navigate(TAB_OPTIONS.list);
+    const [user, setUser] = useState(null);
+    const getUser = async () => {
+        SecureStore.getItemAsync('new').then(async id => {
+            await fetch(`http://192.168.1.243:3000/users/${id}`)
+                .then(res => {
+                    res.json().then(data => {
+                        setUser(data);
+                    }).catch(e => {
+                        console.log(e)
+                    })
+                })
+                .catch(e => {
+                    console.log(e)
+                })
+        })
     }
+    useEffect(() => {
+        getUser();
+    }, [])
+
+    const handleAddToList = async () => {
+        const transformedString = query.split(' ').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
+        try {
+            await fetch("http://192.168.1.243:3000/cart", {
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    "UserID": user.UserID,
+                    "Product": item,
+                    "Quantity": parseInt(count, 10),
+                    "UserQuery": transformedString,
+                    "LowestPrice": ""
+                }),
+            })
+        } catch(e) {
+            console.log(e);
+        } finally {
+            navigation.navigate(TAB_OPTIONS.list);
+        }
+    }
+    //console.log(item)
 
     return (
         <TouchableWithoutFeedback onPress={()=> Keyboard.dismiss()} accessible={false}>
