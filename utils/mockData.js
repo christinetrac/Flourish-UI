@@ -1,31 +1,3 @@
-export const GROCERY_LIST = [
-    {
-        name: 'eggs',
-        description: 'carton of 12',
-        quantity: 1,
-    },
-    {
-        name: 'bread',
-        description: 'loaf',
-        quantity: 2
-    },
-    {
-        name: 'carrots',
-        description: '3lb bag',
-        quantity: 1
-    },
-    {
-        name: 'apple',
-        description: '1 apple',
-        quantity: 6
-    },
-    {
-        name: 'yoghurt',
-        description: 'carton of 18',
-        quantity: 1
-    }
-]
-
 export const STORE_OPTIONS = [
     {
         name: 'Walmart',
