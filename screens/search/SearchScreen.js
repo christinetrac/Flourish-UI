@@ -71,7 +71,7 @@ export const SearchScreen = ({ navigation }) => {
   const [filteredDataSource, setFilteredDataSource] = useState([]);
 
   const getQueryResults = async () => {
-    const transformedString = search.split(' ').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
+    const transformedString = search?.split(' ').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
     await fetch(`http://192.168.1.243:3000/search/${transformedString}`, {
       Accept: "application/json",
       "Content-type": "application/json"

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {StyleSheet, View, Image, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, Image, TouchableOpacity, ScrollView} from 'react-native';
 import {BoldText, MediumText, RegularText} from "../../components/CustomText";
 import {BackButton, PrimaryButton} from "../../components/Buttons";
 import {LIST_STACK} from "../../utils/constants";
@@ -7,6 +7,8 @@ import * as SecureStore from "expo-secure-store";
 
 export const GroceryStoreLocationConfirmationScreen = ({ navigation, route }) => {
     const address = route?.params?.address;
+    const latitude = route?.params?.latitude;
+    const longitude = route?.params?.longitude;
 
     let [user, setUser] = useState(null);
     const getUser = async () => {
@@ -14,7 +16,7 @@ export const GroceryStoreLocationConfirmationScreen = ({ navigation, route }) =>
             console.log(id)
             await fetch(`http://192.168.1.243:3000/users/${id}`)
                 .then(res => {
-                    res.json().then( data => {
+                    res.json().then(data => {
                         console.log(data);
                         setUser(data);
                     })
@@ -28,7 +30,17 @@ export const GroceryStoreLocationConfirmationScreen = ({ navigation, route }) =>
         getUser();
     }, [])
 
+    const handleFindTheBestDeals = async () => {
+        let finalDistance = user.Distance;
+        if(user.Units === "km"){
+            finalDistance *= 1000;
+        }else if(user.Units === "miles"){
+            finalDistance *= 1609.344;
+        }
+    }
+
     return (
+        <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
             <BackButton onPress={() => navigation.pop()} />
             <BoldText style={{ fontSize: 40, alignSelf: 'flex-start', paddingLeft: 40 }}>Optimize your groceries</BoldText>
@@ -39,7 +51,7 @@ export const GroceryStoreLocationConfirmationScreen = ({ navigation, route }) =>
             <View style={{display:"flex", flexDirection: "row", alignItems:"center", paddingBottom:30}}>
                 <View>
                     <MediumText style={{ fontSize: 24, width: 220 }}>
-                        330 Phillip St, Waterloo, ON
+                        {address}
                     </MediumText>
                 </View>
                 <TouchableOpacity
@@ -52,7 +64,7 @@ export const GroceryStoreLocationConfirmationScreen = ({ navigation, route }) =>
                 </TouchableOpacity>
             </View>
             <RegularText style={{ fontSize: 24, alignSelf: 'flex-start', paddingLeft: 40, width: 330 }}>
-                Search stores within:
+                Searching stores within:
             </RegularText>
             <View style={styles.inputContainer}>
                 <View style={styles.inputLabel}>
@@ -68,6 +80,7 @@ export const GroceryStoreLocationConfirmationScreen = ({ navigation, route }) =>
             </View>
             <PrimaryButton label="find the best deals" onPress={() => navigation.navigate(LIST_STACK.storeSelection)}/>
         </View>
+        </ScrollView>
     );
 };
 

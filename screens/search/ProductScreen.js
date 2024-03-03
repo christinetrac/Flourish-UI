@@ -31,7 +31,7 @@ export const ProductScreen = ({ navigation, route }) => {
     }, [])
 
     const handleAddToList = async () => {
-        const transformedString = query.split(' ').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
+        const transformedString = query?.split(' ').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
         try {
             await fetch("http://192.168.1.243:3000/cart", {
                 method: "POST",
@@ -87,9 +87,9 @@ export const ProductScreen = ({ navigation, route }) => {
                         placeholderTextColor="#747474"
                     />
                 </View>
-                <RegularText style={{ fontSize: 24, alignSelf: 'flex-start' }}>Price: {item?.Price}</RegularText>
-                {item?.PricePerUnit !== "NULL" ? (
-                    <RegularText style={{ fontSize: 24, alignSelf: 'flex-start', paddingBottom: 20 }}>Price Per Unit: {item?.PricePerUnit}</RegularText>
+                <RegularText style={{ fontSize: 24, alignSelf: 'flex-start' }}>Price: ${item?.Price}</RegularText>
+                {item?.PricePerUnit !== 0 ? (
+                    <RegularText style={{ fontSize: 24, alignSelf: 'flex-start', paddingBottom: 20 }}>Price Per Unit: ${item?.PricePerUnit}</RegularText>
                 ) : (
                     <View style={{ paddingBottom: 20 }} />
                 )}

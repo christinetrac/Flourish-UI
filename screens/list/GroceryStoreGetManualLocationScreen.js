@@ -15,10 +15,18 @@ export const GroceryStoreGetManualLocationScreen = ({ navigation }) => {
             <BoldText style={{ fontSize: 40, alignSelf: 'flex-start', paddingLeft: 40 }}>Where are you located?</BoldText>
             <GooglePlacesAutocomplete
                 placeholder="Enter your address"
-                query={{key: ""}}
+                query={{
+                    key: "",
+                    region: "ca"
+                }}
                 fetchDetails={true}
+                debounce={200}
                 onPress={(data, details = null) => {
-                    navigation.navigate(LIST_STACK.storeLocationConfirmation, {address: data.description})
+                    navigation.navigate(LIST_STACK.storeLocationConfirmation, {
+                        address: data.description,
+                        latitude: details.geometry.location.lat,
+                        longitude: details.geometry.location.lng
+                    })
                 }}
                 onFail={error => console.log(error)}
                 onNotFound={() => console.log('no results')}

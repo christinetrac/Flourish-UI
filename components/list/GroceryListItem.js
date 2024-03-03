@@ -7,7 +7,7 @@ export const GroceryListItem = ({item}) => {
             <RegularText style={{ fontSize: 40, paddingRight: 18 }}>{item.Quantity}</RegularText>
             <View>
                 <RegularText style={{ fontSize: 20, paddingBottom:6, width: 230 }}>{item.Product.ProductName}</RegularText>
-                <RegularText style={{ fontSize: 20, color: '#6A6A6A' }}>{item.Product.Price} each</RegularText>
+                <RegularText style={{ fontSize: 20, color: '#6A6A6A' }}>${item.Product.Price} each</RegularText>
             </View>
         </View>
     )

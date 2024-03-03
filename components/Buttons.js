@@ -100,7 +100,8 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-start',
         position: 'absolute',
         top: 45,
-        left: 25
+        left: 25,
+        zIndex: 999
     },
     backText: {
         fontSize: 20,
