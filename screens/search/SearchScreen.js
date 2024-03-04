@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from "react";
+import React, {useState, useEffect} from "react";
 import {
   StyleSheet,
   View,
@@ -7,13 +7,12 @@ import {
   TextInput,
   Keyboard,
   Image,
-  TouchableWithoutFeedback,
+  TouchableWithoutFeedback, ActivityIndicator,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import {RegularText, BoldText, RegularClippedText} from "../../components/CustomText";
 import { SEARCH_STACK } from "../../utils/constants";
 import {PrimaryButton} from "../../components/Buttons";
-import { debounce } from 'lodash';
 
 export const SearchScreen = ({ navigation }) => {
   const [seafood, setSeafood] = useState({
@@ -32,6 +31,7 @@ export const SearchScreen = ({ navigation }) => {
   });
 
   const categories = ['seafood', 'eggs', 'canned goods'];
+  const [isLoading, setIsLoading] = useState(false);
   const getCategories = async () => {
     for await (const category of categories) {
       fetch(`http://54.226.95.182:3000/search/category/${category}`, {
@@ -71,6 +71,7 @@ export const SearchScreen = ({ navigation }) => {
   const [filteredDataSource, setFilteredDataSource] = useState([]);
 
   const getQueryResults = async () => {
+    setIsLoading(true);
     const transformedString = search?.split(' ').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
     await fetch(`http://54.226.95.182:3000/search/${transformedString}`, {
       Accept: "application/json",
@@ -79,22 +80,13 @@ export const SearchScreen = ({ navigation }) => {
       res.json().then(results => {
         // console.log(results);
         setFilteredDataSource(results);
+        // console.log(results);
       }).catch(e => console.log(e))
     }).catch(e => console.log(e))
+        .finally(() => {
+          setIsLoading(false);
+        })
   }
-
-  const debouncedFetch = useCallback(
-      debounce(getQueryResults, 500),
-      [search],
-  );
-
-  useEffect(() => {
-    if(search){
-      debouncedFetch();
-    }else {
-      setSubmitted(false);
-    }
-  }, [search])
 
   const rows = [seafood, eggs, cannedGoods]?.map(category => (
       <View style={{height: 210, width:400, paddingLeft:0, paddingRight:0, alignSelf:'center', paddingTop:20}} key={category.name}>
@@ -117,6 +109,7 @@ export const SearchScreen = ({ navigation }) => {
 
   const handleSubmitEditing = () => {
     setSubmitted(true);
+    getQueryResults();
   }
 
   const searchAutocompleteList = () => (
@@ -143,30 +136,36 @@ export const SearchScreen = ({ navigation }) => {
 
   const searchResults = () => (
       <View style={{paddingTop:25}}>
-        <ScrollView>
-          <PrimaryButton
-              label="give me the best price"
-              onPress={() => navigation.navigate(SEARCH_STACK.bestProductScreen, { query: search })}
-          />
-          <BoldText style={{fontSize: 32, paddingLeft: 40, paddingVertical: 20}}>Specific Products</BoldText>
-          {filteredDataSource?.map((item) => (
-              <TouchableOpacity
-                  key={item.ProductName}
-                  style={[styles.productCard, styles.productCardShadowProp]}
-                  onPress={() =>
-                      navigation.navigate(SEARCH_STACK.product, { item: item, query: search})
-                  }
-              >
-                  <Image source={{uri:item?.ProductPhotoUrl}} style={styles.productImage} />
-                  <RegularClippedText
-                      numberOfLines={1}
-                      style={{ fontSize: 18, textTransform: "capitalize", width: 170, alignSelf: "center" }}
+        {isLoading ? (
+            <View style={{position: "absolute", alignSelf: "center", top: 340}}>
+              <ActivityIndicator size="large" color="#000" />
+            </View>
+        ) : (
+            <ScrollView>
+              <PrimaryButton
+                  label="give me the best price"
+                  onPress={() => navigation.navigate(SEARCH_STACK.bestProductScreen, { query: search })}
+              />
+              <BoldText style={{fontSize: 32, paddingLeft: 40, paddingVertical: 20}}>Specific Products</BoldText>
+              {filteredDataSource?.map((item) => (
+                  <TouchableOpacity
+                      key={item.ProductName}
+                      style={[styles.productCard, styles.productCardShadowProp]}
+                      onPress={() =>
+                          navigation.navigate(SEARCH_STACK.product, { item: item, query: search})
+                      }
                   >
-                    {item.ProductName}
-                  </RegularClippedText>
-              </TouchableOpacity>
-          ))}
-        </ScrollView>
+                    <Image source={{uri:item?.ProductPhotoUrl}} style={styles.productImage} />
+                    <RegularClippedText
+                        numberOfLines={1}
+                        style={{ fontSize: 18, textTransform: "capitalize", width: 170, alignSelf: "center" }}
+                    >
+                      {item.ProductName}
+                    </RegularClippedText>
+                  </TouchableOpacity>
+              ))}
+            </ScrollView>
+        )}
       </View>
   )
 
