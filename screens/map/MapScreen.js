@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {StyleSheet, View} from "react-native";
+import {StyleSheet, View, ActivityIndicator} from "react-native";
 import MapView from "react-native-maps";
 import * as Location from 'expo-location';
 import {BackButton, PrimaryButtonXS} from "../../components/Buttons";
@@ -63,17 +63,21 @@ export const MapScreen = ({ navigation }) => {
         style={styles.map}
         initialRegion={initialRegion}
         region={initialRegion}
-        showsUserLocation={true}
-        followUserLocation={true}
+        showsUserLocation={showNext}
+        followUserLocation={showNext}
       >
       </MapView>
-        {showNext && (
+        {showNext ? (
             <View style={{position: "absolute", alignSelf: "center", bottom: 50}}>
                 <PrimaryButtonXS label="next" onPress={() => navigation.navigate(LIST_STACK.storeLocationConfirmation, {
                     latitude: location?.coords?.latitude,
                     longitude: location?.coords?.longitude,
                     address: address
                 })} />
+            </View>
+        ) : (
+            <View style={{position: "absolute", alignSelf: "center", top: 340}}>
+                <ActivityIndicator size="large" color="#000" />
             </View>
         )}
     </View>

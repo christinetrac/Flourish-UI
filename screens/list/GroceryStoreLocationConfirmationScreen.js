@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {StyleSheet, View, Image, TouchableOpacity, ScrollView} from 'react-native';
+import {StyleSheet, View, Image, TouchableOpacity, ScrollView, ActivityIndicator} from 'react-native';
 import {BoldText, MediumText, RegularText} from "../../components/CustomText";
 import {BackButton, PrimaryButton} from "../../components/Buttons";
 import {LIST_STACK} from "../../utils/constants";
@@ -10,14 +10,14 @@ export const GroceryStoreLocationConfirmationScreen = ({ navigation, route }) =>
     const latitude = route?.params?.latitude;
     const longitude = route?.params?.longitude;
 
+    const [isFetching, setIsFetching] = useState(false);
+
     let [user, setUser] = useState(null);
     const getUser = async () => {
-        SecureStore.getItemAsync('new').then(async id => {
-            console.log(id)
+        SecureStore.getItemAsync('opt').then(async id => {
             await fetch(`http://192.168.1.243:3000/users/${id}`)
                 .then(res => {
                     res.json().then(data => {
-                        console.log(data);
                         setUser(data);
                     })
                 })
@@ -37,50 +37,77 @@ export const GroceryStoreLocationConfirmationScreen = ({ navigation, route }) =>
         }else if(user.Units === "miles"){
             finalDistance *= 1609.344;
         }
+
+        setIsFetching(true);
+        await fetch(`http://192.168.1.243:3000/optimize/${user.UserID}/${latitude}/${longitude}/${finalDistance}`, {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            }
+        })
+            .then(res => {
+                res.json().then(data => {
+                    navigation.navigate(LIST_STACK.storeSelection, {results: data, lat: latitude, lng: longitude})
+                    setIsFetching(false);
+                })
+            })
+            .catch(e => {
+                console.log(e)
+            })
     }
 
     return (
-        <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.container}>
-            <BackButton onPress={() => navigation.pop()} />
-            <BoldText style={{ fontSize: 40, alignSelf: 'flex-start', paddingLeft: 40 }}>Optimize your groceries</BoldText>
-            <Image source={require('../../assets/graphics/optimize.png')} style={styles.graphic} />
-            <RegularText style={{ fontSize: 24, alignSelf: 'flex-start', paddingLeft: 40, paddingBottom: 10, width: 330 }}>
-                Where are you located?
-            </RegularText>
-            <View style={{display:"flex", flexDirection: "row", alignItems:"center", paddingBottom:30}}>
-                <View>
-                    <MediumText style={{ fontSize: 24, width: 220 }}>
-                        {address}
-                    </MediumText>
-                </View>
-                <TouchableOpacity
-                    style={{paddingLeft: 45}}
-                    onPress={() => navigation.navigate(LIST_STACK.storeGetLocationOptions)}
-                >
-                    <BoldText style={{ fontSize: 20 }}>
-                        EDIT
-                    </BoldText>
-                </TouchableOpacity>
+        isFetching ? (
+            <View style={styles.container}>
+                <BoldText style={{ fontSize: 40, alignSelf: 'flex-start', paddingLeft: 40 }}>Optimize your groceries</BoldText>
+                <Image source={require('../../assets/graphics/optimize.png')} style={styles.graphic} />
+                <RegularText style={{ fontSize: 32, textAlign: 'left', width: 300, marginTop: 80 }}>
+                    Finding the best deals in town... <ActivityIndicator style={{paddingBottom:2}} />
+                </RegularText>
             </View>
-            <RegularText style={{ fontSize: 24, alignSelf: 'flex-start', paddingLeft: 40, width: 330 }}>
-                Searching stores within:
-            </RegularText>
-            <View style={styles.inputContainer}>
-                <View style={styles.inputLabel}>
-                    <RegularText style={{ fontSize: 20 }}>
-                        Distance
+        ) : (
+            <ScrollView showsVerticalScrollIndicator={false}>
+                <View style={styles.container}>
+                    <BackButton onPress={() => navigation.pop()} />
+                    <BoldText style={{ fontSize: 40, alignSelf: 'flex-start', paddingLeft: 40 }}>Optimize your groceries</BoldText>
+                    <Image source={require('../../assets/graphics/optimize.png')} style={styles.graphic} />
+                    <RegularText style={{ fontSize: 24, alignSelf: 'flex-start', paddingLeft: 40, paddingBottom: 10, width: 330 }}>
+                        Where are you located?
                     </RegularText>
-                </View>
-                <View style={styles.input}>
-                    <RegularText style={{ fontSize: 20, color: "#747474", justifyContent: "center" }}>
-                        {user?.Distance} {user?.Units}
+                    <View style={{display:"flex", flexDirection: "row", alignItems:"center", paddingBottom:30}}>
+                        <View>
+                            <MediumText style={{ fontSize: 24, width: 220 }}>
+                                {address}
+                            </MediumText>
+                        </View>
+                        <TouchableOpacity
+                            style={{paddingLeft: 45}}
+                            onPress={() => navigation.navigate(LIST_STACK.storeGetLocationOptions)}
+                        >
+                            <BoldText style={{ fontSize: 20 }}>
+                                EDIT
+                            </BoldText>
+                        </TouchableOpacity>
+                    </View>
+                    <RegularText style={{ fontSize: 24, alignSelf: 'flex-start', paddingLeft: 40, width: 330 }}>
+                        Searching stores within:
                     </RegularText>
+                    <View style={styles.inputContainer}>
+                        <View style={styles.inputLabel}>
+                            <RegularText style={{ fontSize: 20 }}>
+                                Distance
+                            </RegularText>
+                        </View>
+                        <View style={styles.input}>
+                            <RegularText style={{ fontSize: 20, color: "#747474", justifyContent: "center" }}>
+                                {user?.Distance} {user?.Units}
+                            </RegularText>
+                        </View>
+                    </View>
+                    <PrimaryButton label="find the best deals" onPress={handleFindTheBestDeals}/>
                 </View>
-            </View>
-            <PrimaryButton label="find the best deals" onPress={() => navigation.navigate(LIST_STACK.storeSelection)}/>
-        </View>
-        </ScrollView>
+            </ScrollView>
+        )
     );
 };
 

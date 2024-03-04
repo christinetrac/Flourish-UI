@@ -1,31 +1,41 @@
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet, View, Image, ScrollView } from 'react-native';
 import { BoldText } from "../../components/CustomText";
 import { BackButton } from "../../components/Buttons";
-import {OPTIMIZED_GROCERIES, STORE_OPTIONS} from "../../utils/mockData";
 import { GroceryStoreSelect } from "../../components/list/GroceryStoreSelect";
-import { ScrollBlur } from "../../components/ScrollBlur";
 import { LIST_STACK } from "../../utils/constants";
 
-export const GroceryStoreSelectionScreen = ({ navigation }) => {
-    const [storeOptions, setStoreOptions] = useState(STORE_OPTIONS);
-    const [optimizedGroceries, setOptimizedGroceries] = useState(OPTIMIZED_GROCERIES);
+export const GroceryStoreSelectionScreen = ({ navigation, route }) => {
+    const results = route?.params?.results;
+    const lat = route?.params?.lat;
+    const lng = route?.params?.lng
 
     return (
+        <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
             <BackButton onPress={() => navigation.pop()} />
             <BoldText style={{ fontSize: 40, alignSelf: 'flex-start', paddingLeft: 40 }}>Optimize your groceries</BoldText>
             <Image source={require('../../assets/graphics/optimize.png')} style={styles.graphic} />
-                <ScrollView style={{ display: 'flex', width: 320 }} showsVerticalScrollIndicator={false}>
-                    {storeOptions.map(store => (
-                        <GroceryStoreSelect
-                            store={store}
-                            key={store.name}
-                            onPress={() => navigation.navigate(LIST_STACK.storeConfirmation, {store:store, optimizedGroceries:optimizedGroceries})}
-                        />
-                    ))}
-                </ScrollView>
+                {Object.entries(results).map(([key,value]) => (
+                    <GroceryStoreSelect
+                        name={key}
+                        key={key}
+                        details={value}
+                        userLat={lat}
+                        userLng={lng}
+                        onPress={() => navigation.navigate(
+                            LIST_STACK.storeConfirmation,
+                            {
+                                name:key,
+                                details:value,
+                                userLat:lat,
+                                userLng:lng
+                            }
+                        )}
+                    />
+                ))}
         </View>
+        </ScrollView>
     )
 }
 
@@ -34,7 +44,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#F6FFF1',
         paddingTop: 90,
-        paddingBottom: 20,
+        paddingBottom: 40,
         position: 'relative',
         alignItems: 'center',
     },

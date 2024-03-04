@@ -1,36 +1,94 @@
-import React from "react";
-import { StyleSheet, View, Image, ScrollView } from 'react-native';
+import React, {useEffect, useState} from "react";
+import { StyleSheet, View, ScrollView } from 'react-native';
 import {BackButton, PrimaryButtonXS} from "../../components/Buttons";
 import { BoldText, RegularText } from "../../components/CustomText";
 import { ScrollBlur } from "../../components/ScrollBlur";
 import { LIST_STACK } from "../../utils/constants";
+import * as SecureStore from "expo-secure-store";
+import {getDistance} from "geolib";
+import MapView, {Marker} from "react-native-maps";
 
 export const GroceryStoreConfirmationScreen = ({ navigation, route }) => {
-    const store = route?.params?.store;
-    const optimizedGroceries = route?.params?.optimizedGroceries;
+    const name = route?.params?.name;
+    const details = route?.params?.details;
+    const storeLat = details?.location?.lat;
+    const storeLng = details?.location?.lng;
+    const userLat = route?.params?.userLat;
+    const userLng = route?.params?.userLng;
+
+    let [distance, setDistance] = useState("");
+    const getUser = async () => {
+        SecureStore.getItemAsync('opt').then(async id => {
+            await fetch(`http://192.168.1.243:3000/users/${id}`)
+                .then(res => {
+                    res.json().then(user => {
+                        let distanceM = getDistance(
+                            { latitude: userLat, longitude: userLng },
+                            { latitude: storeLat, longitude: storeLng },
+                            100
+                        );
+                        if(user.Units === "km"){
+                            distanceM /= 1000;
+                            setDistance(distanceM + " km");
+                        }else if(user.Units === "miles"){
+                            distanceM /= 1609.344;
+                            setDistance(distanceM + " miles");
+                        }else {
+                            setDistance(distanceM + " m");
+                        }
+                    })
+                })
+                .catch(e => {
+                    console.log(e)
+                })
+        })
+    }
+    useEffect(() => {
+        getUser()
+    }, [])
 
     return (
         <View style={styles.container}>
+            <MapView
+                style={styles.map}
+                initialRegion={{
+                    latitude: storeLat,
+                    longitude: storeLng,
+                    latitudeDelta: 0.03,
+                    longitudeDelta: 0.03,
+                }}
+            >
+                <Marker coordinate={{
+                    latitude: storeLat,
+                    longitude: storeLng,
+                    }}
+                />
+            </MapView>
             <BackButton onPress={() => navigation.pop()} />
-            <BoldText style={{ fontSize: 40, alignSelf: 'flex-start', paddingLeft: 40, paddingBottom: 20 }}>Optimize your groceries</BoldText>
-            <Image source={require('../../assets/images/map.png')} style={styles.map} />
             <View style={styles.summaryContainer}>
                 <ScrollBlur>
                     <ScrollView style={{ display: 'flex', width: 270 }} showsVerticalScrollIndicator={false}>
-                        <View style={[styles.flexText, {paddingBottom: 16}]}>
-                            <RegularText style={{ fontSize: 36 }}>{store.name}</RegularText>
-                            <RegularText style={{ fontSize: 20, color: '#6A6A6A' }}>{store.distance}</RegularText>
+                        <View style={[styles.flexText, {paddingBottom: 12}]}>
+                            <RegularText style={{ fontSize: 36 }}>{name}</RegularText>
+                            <RegularText style={{ fontSize: 20, color: '#6A6A6A' }}>{distance}</RegularText>
                         </View>
-                        {optimizedGroceries.map(grocery => (
-                            <View key={grocery.name} style={styles.flexText}>
-                                <RegularText style={{ fontSize: 16, color: '#6A6A6A', textTransform: 'capitalize' }}>{grocery.name}</RegularText>
-                                <RegularText style={{ fontSize: 16, color: '#6A6A6A' }}>${grocery.price}</RegularText>
+                        {details?.cart?.map(item => (
+                            <View key={item.ProductName} style={styles.flexText}>
+                                {item.Price !== 0 ? (
+                                    <RegularText style={{ fontSize: 16, color: '#6A6A6A', textTransform: 'capitalize' }}>
+                                        {item.ProductName}: <BoldText style={{color: "#445601"}}>${item.Price}</BoldText>
+                                    </RegularText>
+                                ) : (
+                                    <RegularText style={{ fontSize: 16, color: '#6A6A6A', textTransform: 'capitalize', textDecorationLine: 'line-through', textDecorationStyle: 'solid' }}>
+                                        {item.ProductName}: <BoldText style={{color: "#445601"}}>item not available here</BoldText>
+                                    </RegularText>
+                                )}
                             </View>
                         ))}
                     </ScrollView>
                 </ScrollBlur>
-                <BoldText style={{ fontSize: 20, paddingBottom: 15, paddingTop: 8 }}>Total:  ${store.total}</BoldText>
-                <PrimaryButtonXS label="select this store" onPress={() => navigation.navigate(LIST_STACK.listSuccess)} />
+                <BoldText style={{ fontSize: 20, paddingBottom: 8, paddingTop: 8 }}>Total:  ${details.price}</BoldText>
+                <PrimaryButtonXS label="select this store" onPress={() => navigation.navigate(LIST_STACK.listSuccess, {store: name})} />
             </View>
         </View>
     )
@@ -39,20 +97,12 @@ export const GroceryStoreConfirmationScreen = ({ navigation, route }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F6FFF1',
-        paddingTop: 90,
-        paddingBottom: 20,
-        position: 'relative',
-        alignItems: 'center',
     },
     map: {
-        width: 390,
-        height: 600,
-        position: 'absolute',
-        bottom: 0
+        flex: 1,
     },
     summaryContainer: {
-        height: 340,
+        height: 330,
         width: 310,
         backgroundColor: '#FFF',
         borderTopLeftRadius: 14,
@@ -68,7 +118,8 @@ const styles = StyleSheet.create({
         bottom: 0,
         paddingHorizontal: 20,
         paddingTop: 25,
-        paddingBottom: 18
+        paddingBottom: 0,
+        alignSelf: 'center'
     },
     flexText: {
         display: 'flex',

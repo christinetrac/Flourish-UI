@@ -12,7 +12,7 @@ export const ProductScreen = ({ navigation, route }) => {
 
     const [user, setUser] = useState(null);
     const getUser = async () => {
-        SecureStore.getItemAsync('new').then(async id => {
+        SecureStore.getItemAsync('opt').then(async id => {
             await fetch(`http://192.168.1.243:3000/users/${id}`)
                 .then(res => {
                     res.json().then(data => {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {Keyboard, StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
 import { BoldText } from "../../components/CustomText";
 import { BackButton } from "../../components/Buttons";
@@ -7,7 +7,6 @@ import {Ionicons} from "@expo/vector-icons";
 import {LIST_STACK} from "../../utils/constants";
 
 export const GroceryStoreGetManualLocationScreen = ({ navigation }) => {
-
     return (
         <TouchableWithoutFeedback onPress={()=> Keyboard.dismiss()} accessible={false}>
         <View style={styles.container}>

@@ -7,7 +7,7 @@ import * as SecureStore from "expo-secure-store";
 export const ProfileScreen = ({ navigation }) => {
     let [user, setUser] = useState(null);
     const getUser = async () => {
-        SecureStore.getItemAsync('new').then(async id => {
+        SecureStore.getItemAsync('opt').then(async id => {
             console.log(id)
             await fetch(`http://192.168.1.243:3000/users/${id}`)
                 .then(res => {
