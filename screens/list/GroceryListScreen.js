@@ -17,12 +17,12 @@ export const GroceryListScreen = ({ navigation }) => {
 
     const getGroceryList = async () => {
         SecureStore.getItemAsync('opt').then(async id => {
-            await fetch(`http://192.168.1.243:3000/users/${id}`)
+            await fetch(`http://54.226.95.182:3000/users/${id}`)
                 .then(res => {
                     res.json().then(async data => {
                         const id = data.UserID;
                         setUserId(id);
-                        await fetch(`http://192.168.1.243:3000/cart/${id}`, {
+                        await fetch(`http://54.226.95.182:3000/cart/${id}`, {
                             Accept: "application/json",
                             "Content-type": "application/json"
                         })
@@ -50,7 +50,7 @@ export const GroceryListScreen = ({ navigation }) => {
     }, [isFocused])
 
     const clearGroceryList = async () => {
-        await fetch(`http://192.168.1.243:3000/cart/empty/${userId}`, {
+        await fetch(`http://54.226.95.182:3000/cart/empty/${userId}`, {
             Accept: "application/json",
             "Content-type": "application/json"
         })

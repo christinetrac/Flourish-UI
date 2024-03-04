@@ -15,7 +15,7 @@ export const GroceryStoreLocationConfirmationScreen = ({ navigation, route }) =>
     let [user, setUser] = useState(null);
     const getUser = async () => {
         SecureStore.getItemAsync('opt').then(async id => {
-            await fetch(`http://192.168.1.243:3000/users/${id}`)
+            await fetch(`http://54.226.95.182:3000/users/${id}`)
                 .then(res => {
                     res.json().then(data => {
                         setUser(data);
@@ -39,7 +39,7 @@ export const GroceryStoreLocationConfirmationScreen = ({ navigation, route }) =>
         }
 
         setIsFetching(true);
-        await fetch(`http://192.168.1.243:3000/optimize/${user.UserID}/${latitude}/${longitude}/${finalDistance}`, {
+        await fetch(`http://54.226.95.182:3000/optimize/${user.UserID}/${latitude}/${longitude}/${finalDistance}`, {
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",

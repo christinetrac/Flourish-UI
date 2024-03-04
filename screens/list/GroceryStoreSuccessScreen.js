@@ -14,7 +14,7 @@ export const GroceryStoreSuccessScreen = ({ navigation, route }) => {
                 <Image source={require("../../assets/graphics/partyHat.png")} style={styles.hat} />
                 {/*<RegularText style={{ fontSize: 20 }}>You saved $29.90 with Flourish!</RegularText>*/}
                 <RegularText style={{ fontSize: 20 }}>
-                    Your grocery list has been updated for a trip to <BoldText style={{color: "#445601"}}>{store}</BoldText>
+                    Your grocery list has been updated for a trip to <BoldText style={{color: "#445601"}}>{store === "Voila" ? "Sobeys": store}</BoldText>
                 </RegularText>
             </View>
             <PrimaryButton label="see updated list" onPress={() => navigation.navigate(LIST_STACK.list)} />

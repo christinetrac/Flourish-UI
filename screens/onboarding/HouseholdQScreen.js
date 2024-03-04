@@ -23,7 +23,7 @@ export const HouseholdQScreen = ({ navigation, route }) => {
     const handleSubmit = async () => {
         // send user profile to backend and persist to local storage
         try {
-            await fetch("http://192.168.1.243:3000/users", {
+            await fetch("http://54.226.95.182:3000/users", {
                 method: "POST",
                 headers: {
                     Accept: "application/json",

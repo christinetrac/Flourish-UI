@@ -34,7 +34,7 @@ export const SearchScreen = ({ navigation }) => {
   const categories = ['seafood', 'eggs', 'canned goods'];
   const getCategories = async () => {
     for await (const category of categories) {
-      fetch(`http://192.168.1.243:3000/search/category/${category}`, {
+      fetch(`http://54.226.95.182:3000/search/category/${category}`, {
         Accept: "application/json",
         "Content-type": "application/json"
       })
@@ -72,7 +72,7 @@ export const SearchScreen = ({ navigation }) => {
 
   const getQueryResults = async () => {
     const transformedString = search?.split(' ').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
-    await fetch(`http://192.168.1.243:3000/search/${transformedString}`, {
+    await fetch(`http://54.226.95.182:3000/search/${transformedString}`, {
       Accept: "application/json",
       "Content-type": "application/json"
     }).then(res => {

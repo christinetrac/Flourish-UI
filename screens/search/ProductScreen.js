@@ -13,7 +13,7 @@ export const ProductScreen = ({ navigation, route }) => {
     const [user, setUser] = useState(null);
     const getUser = async () => {
         SecureStore.getItemAsync('opt').then(async id => {
-            await fetch(`http://192.168.1.243:3000/users/${id}`)
+            await fetch(`http://54.226.95.182:3000/users/${id}`)
                 .then(res => {
                     res.json().then(data => {
                         setUser(data);
@@ -33,7 +33,7 @@ export const ProductScreen = ({ navigation, route }) => {
     const handleAddToList = async () => {
         const transformedString = query?.split(' ').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
         try {
-            await fetch("http://192.168.1.243:3000/cart", {
+            await fetch("http://54.226.95.182:3000/cart", {
                 method: "POST",
                 headers: {
                     Accept: "application/json",
@@ -63,7 +63,7 @@ export const ProductScreen = ({ navigation, route }) => {
                 <View style={styles.card}>
                     <View style={styles.badge}>
                         <BoldText style={{fontSize:12, textTransform:"uppercase", color: "#445601"}}>
-                            {item.Store}
+                            {item.Store === "Voila" ? "Sobeys": item.Store}
                         </BoldText>
                     </View>
                     <Image source={{uri:item?.ProductPhotoUrl}} style={styles.image} />

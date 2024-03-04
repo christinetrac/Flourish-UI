@@ -29,7 +29,7 @@ export const HomeScreen = ({ navigation }) => {
     const categories = ['fruits and vegetables', 'meat', 'dairy', 'bread'];
     const getUser = async () => {
         SecureStore.getItemAsync('opt').then(async id => {
-            await fetch(`http://192.168.1.243:3000/users/${id}`)
+            await fetch(`http://54.226.95.182:3000/users/${id}`)
                 .then(res => {
                     res.json().then(data => {
                         setUser(data);
@@ -45,7 +45,7 @@ export const HomeScreen = ({ navigation }) => {
 
     const getCategories = async () => {
         for await (const category of categories) {
-            fetch(`http://192.168.1.243:3000/search/category/${category}`, {
+            fetch(`http://54.226.95.182:3000/search/category/${category}`, {
                 Accept: "application/json",
                 "Content-type": "application/json"
             })

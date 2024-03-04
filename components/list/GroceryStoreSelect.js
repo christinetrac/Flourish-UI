@@ -14,7 +14,7 @@ export const GroceryStoreSelect = ({name, details, userLat, userLng, onPress}) =
     let [distance, setDistance] = useState("");
     const getUser = async () => {
         SecureStore.getItemAsync('opt').then(async id => {
-            await fetch(`http://192.168.1.243:3000/users/${id}`)
+            await fetch(`http://54.226.95.182:3000/users/${id}`)
                 .then(res => {
                     res.json().then(user => {
                         let distanceM = getDistance(
@@ -46,7 +46,7 @@ export const GroceryStoreSelect = ({name, details, userLat, userLng, onPress}) =
     return (
         <TouchableOpacity style={styles.container} onPress={onPress}>
             <View>
-                <RegularText style={{ fontSize: 20, paddingBottom: 4 }}>{name}</RegularText>
+                <RegularText style={{ fontSize: 20, paddingBottom: 4 }}>{name === "Voila" ? "Sobeys": name}</RegularText>
                 <RegularText style={{ fontSize: 14, color: '#6A6A6A' }}>Total: ${details.price?.toFixed(2)}</RegularText>
                 <RegularText style={{ fontSize: 14, color: '#6A6A6A' }}>Items found: {itemsFound}</RegularText>
             </View>

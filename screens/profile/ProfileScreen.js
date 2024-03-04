@@ -9,7 +9,7 @@ export const ProfileScreen = ({ navigation }) => {
     const getUser = async () => {
         SecureStore.getItemAsync('opt').then(async id => {
             console.log(id)
-            await fetch(`http://192.168.1.243:3000/users/${id}`)
+            await fetch(`http://54.226.95.182:3000/users/${id}`)
                 .then(res => {
                     res.json().then( data => {
                         console.log(data);

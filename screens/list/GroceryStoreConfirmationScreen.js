@@ -20,7 +20,7 @@ export const GroceryStoreConfirmationScreen = ({ navigation, route }) => {
     let [id, setId] = useState(null);
     const getUser = async () => {
         SecureStore.getItemAsync('opt').then(async id => {
-            await fetch(`http://192.168.1.243:3000/users/${id}`)
+            await fetch(`http://54.226.95.182:3000/users/${id}`)
                 .then(res => {
                     res.json().then(user => {
                         setId(user.UserID);
@@ -51,7 +51,7 @@ export const GroceryStoreConfirmationScreen = ({ navigation, route }) => {
 
     const handleStoreConfirmation = async () => {
         try {
-            await fetch("http://192.168.1.243:3000/cart/new", {
+            await fetch("http://54.226.95.182:3000/cart/new", {
                 method: "POST",
                 headers: {
                     Accept: "application/json",
@@ -91,7 +91,7 @@ export const GroceryStoreConfirmationScreen = ({ navigation, route }) => {
                 <ScrollBlur>
                     <ScrollView style={{ display: 'flex', width: 270 }} showsVerticalScrollIndicator={false}>
                         <View style={[styles.flexText, {paddingBottom: 12}]}>
-                            <RegularText style={{ fontSize: 36 }}>{name}</RegularText>
+                            <RegularText style={{ fontSize: 36 }}>{name === "Voila" ? "Sobeys": name}</RegularText>
                             <RegularText style={{ fontSize: 20, color: '#6A6A6A' }}>{distance}</RegularText>
                         </View>
                         {details?.cart?.map(item => (
