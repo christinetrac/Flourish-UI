@@ -73,10 +73,11 @@ export const GroceryListScreen = ({ navigation }) => {
                         <ScrollBlur>
                             <ScrollView style={{ display: 'flex', width: 318, paddingTop: 10 }} showsVerticalScrollIndicator={false}>
                                 {groceryList?.map(item => (
+                                    item.Product &&
                                     Object.keys(item.Product).length ? (
-                                        <GroceryListItem item={item} key={item.UserQuery} />
+                                        <GroceryListItem item={item} key={item.UserQuery + item.Quantity} />
                                     ) : (
-                                        <GroceryListDealItem item={item} key={item.UserQuery} />
+                                        <GroceryListDealItem item={item} key={item.UserQuery + item.Quantity} />
                                     )
                                 ))}
                                 <TouchableOpacity onPress={clearGroceryList}>

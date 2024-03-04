@@ -1,6 +1,5 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { NavigationContainer } from "@react-navigation/native";
 import { TAB_OPTIONS } from "../utils/constants";
 import HomeIcon from "../assets/icons/home.svg";
 import ListIcon from "../assets/icons/list.svg";
@@ -36,6 +35,7 @@ const BottomTabNavigator = () => {
             tabBarIcon: ({ color }) => (
               <HomeIcon width={30} height={30} color={color} />
             ),
+            unmountOnBlur: true,
           }}
         />
         <Tab.Screen
@@ -45,6 +45,7 @@ const BottomTabNavigator = () => {
             tabBarIcon: ({ color }) => (
               <ListIcon width={30} height={30} color={color} />
             ),
+            unmountOnBlur: true,
           }}
         />
         <Tab.Screen
@@ -54,6 +55,7 @@ const BottomTabNavigator = () => {
             tabBarIcon: ({ color }) => (
               <SearchIcon width={25} height={25} color={color} />
             ),
+            unmountOnBlur: true,
           }}
         />
         <Tab.Screen
@@ -63,6 +65,7 @@ const BottomTabNavigator = () => {
             tabBarIcon: ({ color }) => (
               <UserIcon width={30} height={30} color={color} />
             ),
+            unmountOnBlur: true,
           }}
         />
       </Tab.Navigator>

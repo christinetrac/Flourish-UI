@@ -17,11 +17,13 @@ export const GroceryStoreConfirmationScreen = ({ navigation, route }) => {
     const userLng = route?.params?.userLng;
 
     let [distance, setDistance] = useState("");
+    let [id, setId] = useState(null);
     const getUser = async () => {
         SecureStore.getItemAsync('opt').then(async id => {
             await fetch(`http://192.168.1.243:3000/users/${id}`)
                 .then(res => {
                     res.json().then(user => {
+                        setId(user.UserID);
                         let distanceM = getDistance(
                             { latitude: userLat, longitude: userLng },
                             { latitude: storeLat, longitude: storeLng },
@@ -46,6 +48,26 @@ export const GroceryStoreConfirmationScreen = ({ navigation, route }) => {
     useEffect(() => {
         getUser()
     }, [])
+
+    const handleStoreConfirmation = async () => {
+        try {
+            await fetch("http://192.168.1.243:3000/cart/new", {
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    "UserID": id,
+                    "cart": details.cart,
+                }),
+            })
+        } catch(e) {
+            console.log(e);
+        } finally {
+            navigation.navigate(LIST_STACK.listSuccess, {store: name});
+        }
+    }
 
     return (
         <View style={styles.container}>
@@ -76,7 +98,7 @@ export const GroceryStoreConfirmationScreen = ({ navigation, route }) => {
                             <View key={item.ProductName} style={styles.flexText}>
                                 {item.Price !== 0 ? (
                                     <RegularText style={{ fontSize: 16, color: '#6A6A6A', textTransform: 'capitalize' }}>
-                                        {item.ProductName}: <BoldText style={{color: "#445601"}}>${item.Price}</BoldText>
+                                        {item.ProductName}: <BoldText style={{color: "#445601"}}>${item.Price?.toFixed(2)}</BoldText>
                                     </RegularText>
                                 ) : (
                                     <RegularText style={{ fontSize: 16, color: '#6A6A6A', textTransform: 'capitalize', textDecorationLine: 'line-through', textDecorationStyle: 'solid' }}>
@@ -87,8 +109,8 @@ export const GroceryStoreConfirmationScreen = ({ navigation, route }) => {
                         ))}
                     </ScrollView>
                 </ScrollBlur>
-                <BoldText style={{ fontSize: 20, paddingBottom: 8, paddingTop: 8 }}>Total:  ${details.price}</BoldText>
-                <PrimaryButtonXS label="select this store" onPress={() => navigation.navigate(LIST_STACK.listSuccess, {store: name})} />
+                <BoldText style={{ fontSize: 20, paddingBottom: 8, paddingTop: 8 }}>Total:  ${details.price?.toFixed(2)}</BoldText>
+                <PrimaryButtonXS label="select this store" onPress={handleStoreConfirmation} />
             </View>
         </View>
     )

@@ -87,9 +87,9 @@ export const ProductScreen = ({ navigation, route }) => {
                         placeholderTextColor="#747474"
                     />
                 </View>
-                <RegularText style={{ fontSize: 24, alignSelf: 'flex-start' }}>Price: ${item?.Price}</RegularText>
+                <RegularText style={{ fontSize: 24, alignSelf: 'flex-start' }}>Price: ${item?.Price?.toFixed(2)}</RegularText>
                 {item?.PricePerUnit !== 0 ? (
-                    <RegularText style={{ fontSize: 24, alignSelf: 'flex-start', paddingBottom: 20 }}>Price Per Unit: ${item?.PricePerUnit}</RegularText>
+                    <RegularText style={{ fontSize: 24, alignSelf: 'flex-start', paddingBottom: 20 }}>Price Per Unit: ${item?.PricePerUnit?.toFixed(2)}</RegularText>
                 ) : (
                     <View style={{ paddingBottom: 20 }} />
                 )}

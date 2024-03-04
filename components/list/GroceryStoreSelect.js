@@ -47,7 +47,7 @@ export const GroceryStoreSelect = ({name, details, userLat, userLng, onPress}) =
         <TouchableOpacity style={styles.container} onPress={onPress}>
             <View>
                 <RegularText style={{ fontSize: 20, paddingBottom: 4 }}>{name}</RegularText>
-                <RegularText style={{ fontSize: 14, color: '#6A6A6A' }}>Total: ${details.price}</RegularText>
+                <RegularText style={{ fontSize: 14, color: '#6A6A6A' }}>Total: ${details.price?.toFixed(2)}</RegularText>
                 <RegularText style={{ fontSize: 14, color: '#6A6A6A' }}>Items found: {itemsFound}</RegularText>
             </View>
             <RegularText style={{ fontSize: 20, color: '#6A6A6A' }}>{distance}</RegularText>
