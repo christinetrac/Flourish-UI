@@ -88,7 +88,7 @@ export const HomeScreen = ({ navigation }) => {
             <View style={{flexDirection:'row'}}>
                 <BoldText style={{fontSize: 32, alignSelf: 'flex-start', paddingLeft: 16, paddingBottom: 8, textTransform: 'capitalize'}}>{category.name}</BoldText>
             </View>
-            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{backgroundColor: '#F6FFF1'}}>
                 {category?.items?.map(item => (
                     <TouchableOpacity style={{zIndex:10}} key={item?.ProductName} onPress={() => navigation.navigate(SEARCH_STACK.product, {item: item})}>
                         <View style={{marginRight:10, marginLeft:15}}>
@@ -104,7 +104,7 @@ export const HomeScreen = ({ navigation }) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <ScrollView showsVerticalScrollIndicator={false}>
+            <ScrollView showsVerticalScrollIndicator={false} style={{backgroundColor: '#F6FFF1'}}>
                 <BoldText style={{ fontSize: 40, width: 340, paddingLeft: 40, paddingTop:40 }} >
                     Welcome back, {user?.Name}
                 </BoldText>

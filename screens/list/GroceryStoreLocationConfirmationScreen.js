@@ -66,7 +66,7 @@ export const GroceryStoreLocationConfirmationScreen = ({ navigation, route }) =>
                 </RegularText>
             </View>
         ) : (
-            <ScrollView showsVerticalScrollIndicator={false}>
+            <ScrollView showsVerticalScrollIndicator={false} style={{backgroundColor: '#F6FFF1'}}>
                 <View style={styles.container}>
                     <BackButton onPress={() => navigation.pop()} />
                     <BoldText style={{ fontSize: 40, alignSelf: 'flex-start', paddingLeft: 40 }}>Optimize your groceries</BoldText>

@@ -94,8 +94,8 @@ export const GroceryStoreConfirmationScreen = ({ navigation, route }) => {
                             <RegularText style={{ fontSize: 36 }}>{name === "Voila" ? "Sobeys": name}</RegularText>
                             <RegularText style={{ fontSize: 20, color: '#6A6A6A' }}>{distance}</RegularText>
                         </View>
-                        {details?.cart?.map(item => (
-                            <View key={item.ProductName} style={styles.flexText}>
+                        {details?.cart?.map((item, i) => (
+                            <View key={i} style={styles.flexText}>
                                 {item.Price !== 0 ? (
                                     <RegularText style={{ fontSize: 16, color: '#6A6A6A', textTransform: 'capitalize' }}>
                                         {item.ProductName}: <BoldText style={{color: "#445601"}}>${item.Price?.toFixed(2)}</BoldText>

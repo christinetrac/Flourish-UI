@@ -16,7 +16,7 @@ import * as SecureStore from "expo-secure-store";
 export const BestProductScreen = ({ navigation, route }) => {
     const query = route?.params?.query;
     const [count, onCountChange] = useState("");
-    const [lowestPriceOption, setLowestPriceOption] = useState("ItemPrice");
+    const [lowestPriceOption, setLowestPriceOption] = useState("Price");
 
     const [user, setUser] = useState(null);
     const getUser = async () => {
@@ -94,8 +94,8 @@ export const BestProductScreen = ({ navigation, route }) => {
                 Lowest Price Preference
             </RegularText>
             <View style={styles.quality}>
-                <TouchableOpacity style={lowestPriceOption === 'ItemPrice' ? styles.qualityButtonActive : styles.qualityButton} onPress={() => setLowestPriceOption('ItemPrice')}>
-                    <BoldText style={lowestPriceOption === 'ItemPrice' ? styles.qualityTextActive : styles.qualityText}>Item Price</BoldText>
+                <TouchableOpacity style={lowestPriceOption === 'Price' ? styles.qualityButtonActive : styles.qualityButton} onPress={() => setLowestPriceOption('Price')}>
+                    <BoldText style={lowestPriceOption === 'Price' ? styles.qualityTextActive : styles.qualityText}>Item Price</BoldText>
                 </TouchableOpacity>
                 <TouchableOpacity style={lowestPriceOption === 'PricePerUnit' ? styles.qualityButtonActive : styles.qualityButton} onPress={() => setLowestPriceOption('PricePerUnit')}>
                     <BoldText style={lowestPriceOption === 'PricePerUnit' ? styles.qualityTextActive : styles.qualityText}>Price Per Unit</BoldText>

@@ -93,7 +93,7 @@ export const SearchScreen = ({ navigation }) => {
         <View style={{flexDirection:'row'}}>
           <BoldText style={{fontSize: 32, alignSelf: 'flex-start', paddingLeft: 16, paddingBottom: 8, textTransform: 'capitalize'}}>{category.name}</BoldText>
         </View>
-        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{backgroundColor: '#F6FFF1'}}>
           {category?.items?.map(item => (
               <TouchableOpacity style={{zIndex:10}} key={item?.ProductName} onPress={() => navigation.navigate(SEARCH_STACK.product, {item: item, query: search})}>
                 <View style={{marginRight:10, marginLeft:15}}>
@@ -141,7 +141,7 @@ export const SearchScreen = ({ navigation }) => {
               <ActivityIndicator size="large" color="#000" />
             </View>
         ) : (
-            <ScrollView>
+            <ScrollView style={{backgroundColor: '#F6FFF1'}}>
               <PrimaryButton
                   label="give me the best price"
                   onPress={() => navigation.navigate(SEARCH_STACK.bestProductScreen, { query: search })}

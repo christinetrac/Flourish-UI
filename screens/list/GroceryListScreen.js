@@ -71,13 +71,13 @@ export const GroceryListScreen = ({ navigation }) => {
                 <>
                     {groceryList.length !== 0 ? (
                         <ScrollBlur>
-                            <ScrollView style={{ display: 'flex', width: 318, paddingTop: 10 }} showsVerticalScrollIndicator={false}>
-                                {groceryList?.map(item => (
+                            <ScrollView style={{ display: 'flex', width: 318, paddingTop: 10, backgroundColor: '#F6FFF1' }} showsVerticalScrollIndicator={false} >
+                                {groceryList?.map((item, i) => (
                                     item.Product &&
                                     Object.keys(item.Product).length ? (
-                                        <GroceryListItem item={item} key={item.UserQuery + item.Quantity} />
+                                        <GroceryListItem item={item} key={i} />
                                     ) : (
-                                        <GroceryListDealItem item={item} key={item.UserQuery + item.Quantity} />
+                                        <GroceryListDealItem item={item} key={i} />
                                     )
                                 ))}
                                 <TouchableOpacity onPress={clearGroceryList}>
