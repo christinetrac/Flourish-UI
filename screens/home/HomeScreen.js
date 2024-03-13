@@ -28,7 +28,7 @@ export const HomeScreen = ({ navigation }) => {
 
     const categories = ['fruits and vegetables', 'meat', 'dairy', 'bread'];
     const getUser = async () => {
-        SecureStore.getItemAsync('opt').then(async id => {
+        SecureStore.getItemAsync('zz').then(async id => {
             await fetch(`http://54.226.95.182:3000/users/${id}`)
                 .then(res => {
                     res.json().then(data => {
@@ -90,7 +90,7 @@ export const HomeScreen = ({ navigation }) => {
             </View>
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{backgroundColor: '#F6FFF1'}}>
                 {category?.items?.map(item => (
-                    <TouchableOpacity style={{zIndex:10}} key={item?.ProductName} onPress={() => navigation.navigate(SEARCH_STACK.product, {item: item})}>
+                    <TouchableOpacity style={{zIndex:10}} key={item?.ProductName} onPress={() => navigation.navigate(SEARCH_STACK.product, {item: item, query: ""})}>
                         <View style={{marginRight:10, marginLeft:15}}>
                             <View style={[styles.card, styles.shadowProp]}>
                                 <Image source={{uri:item?.ProductPhotoUrl}} style={styles.image}/>

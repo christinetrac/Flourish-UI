@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import { StyleSheet, View, ScrollView } from 'react-native';
+import { StyleSheet, View, ScrollView, Text } from 'react-native';
 import {BackButton, PrimaryButtonXS} from "../../components/Buttons";
 import { BoldText, RegularText } from "../../components/CustomText";
 import { ScrollBlur } from "../../components/ScrollBlur";
@@ -19,7 +19,7 @@ export const GroceryStoreConfirmationScreen = ({ navigation, route }) => {
     let [distance, setDistance] = useState("");
     let [id, setId] = useState(null);
     const getUser = async () => {
-        SecureStore.getItemAsync('opt').then(async id => {
+        SecureStore.getItemAsync('zz').then(async id => {
             await fetch(`http://54.226.95.182:3000/users/${id}`)
                 .then(res => {
                     res.json().then(user => {
@@ -101,8 +101,8 @@ export const GroceryStoreConfirmationScreen = ({ navigation, route }) => {
                                         {item.ProductName}: <BoldText style={{color: "#445601"}}>${item.Price?.toFixed(2)}</BoldText>
                                     </RegularText>
                                 ) : (
-                                    <RegularText style={{ fontSize: 16, color: '#6A6A6A', textTransform: 'capitalize', textDecorationLine: 'line-through', textDecorationStyle: 'solid' }}>
-                                        {item.ProductName}: <BoldText style={{color: "#445601"}}>item not available here</BoldText>
+                                    <RegularText style={{ fontSize: 16, color: '#6A6A6A', textTransform: 'capitalize' }}>
+                                        <Text style={{textDecorationLine: 'line-through', textDecorationStyle: 'solid'}}>{item.ProductName}:</Text> <BoldText style={{color: "#445601"}}>item not available here</BoldText>
                                     </RegularText>
                                 )}
                             </View>

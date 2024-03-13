@@ -12,7 +12,7 @@ export const ProductScreen = ({ navigation, route }) => {
 
     const [user, setUser] = useState(null);
     const getUser = async () => {
-        SecureStore.getItemAsync('opt').then(async id => {
+        SecureStore.getItemAsync('zz').then(async id => {
             await fetch(`http://54.226.95.182:3000/users/${id}`)
                 .then(res => {
                     res.json().then(data => {
@@ -43,7 +43,7 @@ export const ProductScreen = ({ navigation, route }) => {
                     "UserID": user.UserID,
                     "Product": item,
                     "Quantity": parseInt(count, 10),
-                    "UserQuery": transformedString,
+                    "UserQuery": query ? transformedString: "",
                     "LowestPrice": ""
                 }),
             })

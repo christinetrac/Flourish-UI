@@ -16,7 +16,7 @@ export const GroceryListScreen = ({ navigation }) => {
     const [isLoading, setIsLoading] = useState(true);
 
     const getGroceryList = async () => {
-        SecureStore.getItemAsync('opt').then(async id => {
+        SecureStore.getItemAsync('zz').then(async id => {
             await fetch(`http://54.226.95.182:3000/users/${id}`)
                 .then(res => {
                     res.json().then(async data => {
@@ -29,6 +29,7 @@ export const GroceryListScreen = ({ navigation }) => {
                             .then(res => {
                                 res.json().then(list => {
                                     setGroceryList(JSON.parse(list));
+                                    console.log(JSON.parse(list))
                                 }).catch(e => console.log(e))
                             }).catch(e => console.log(e))
                     }).catch(e => {
